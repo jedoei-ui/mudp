@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enrol — Music Depot</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f5f7;
+      --accent: #c8a96e;
+      --accent-light: #e8d5a3;
+      --grey: #1c1c1e;
+      --grey-mid: #3a3a3c;
+      --grey-text: #8e8e93;
+      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+
+    .nav-back:hover { gap: 10px; }
+
+    .enrol-page {
+      padding: 120px 48px 80px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .page-eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .page-title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    .page-sub {
+      font-size: 18px;
+      color: var(--grey-text);
+      line-height: 1.6;
+      max-width: 520px;
+      margin-bottom: 64px;
+    }
+
+    .enrol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    form { display: flex; flex-direction: column; gap: 20px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--grey-text);
+    }
+
+    input, select, textarea {
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: var(--font);
+      font-size: 16px;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--grey-text); }
+
+    select option { background: var(--grey); }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(200,169,110,0.5);
+      box-shadow: 0 0 0 3px rgba(200,169,110,0.1);
+    }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .submit-btn {
+      background: var(--accent);
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(200,169,110,0.2);
+      letter-spacing: 0.01em;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-light);
+      transform: scale(1.02);
+      box-shadow: 0 8px 32px rgba(200,169,110,0.3);
+    }
+
+    .enrol-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .aside-card {
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .aside-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .aside-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .aside-card li {
+      font-size: 15px;
+      color: var(--grey-text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .aside-card li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .contact-info { margin-top: 8px; }
+
+    .contact-info p {
+      font-size: 15px;
+      color: var(--grey-text);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .contact-info a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .enrol-page { padding: 100px 24px 60px; }
+      .enrol-grid { grid-template-columns: 1fr; gap: 40px; }
+      nav { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="music-depot.html" class="nav-logo">Music<span>Depot</span></a>
+  <a href="music-depot.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="enrol-page">
+  <p class="page-eyebrow">Get Started</p>
+  <h1 class="page-title">Enrol at<br>Music Depot</h1>
+  <p class="page-sub">Fill in the form below and we'll be in touch within 24 hours to schedule your first trial lesson.</p>
+
+  <div class="enrol-grid">
+    <form>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required />
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" placeholder="+61 400 000 000" />
+      </div>
+
+      <div class="form-group">
+        <label>Student Age</label>
+        <select>
+          <option value="" disabled selected>Select age range</option>
+          <option>Under 7</option>
+          <option>7–12</option>
+          <option>13–17</option>
+          <option>18–25</option>
+          <option>26–40</option>
+          <option>40+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Experience Level</label>
+        <select>
+          <option value="" disabled selected>Select level</option>
+          <option>Complete beginner</option>
+          <option>Some experience (< 1 year)</option>
+          <option>Beginner (1–2 years)</option>
+          <option>Intermediate (2–5 years)</option>
+          <option>Advanced (5+ years)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Musical Goals</label>
+        <textarea placeholder="Tell us what you'd love to achieve — your favourite genres, songs, or just what excites you about playing piano..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send Enquiry</button>
+    </form>
+
+    <div class="enrol-aside">
+      <div class="aside-card">
+        <h3>What to expect</h3>
+        <ul>
+          <li>We'll reply within 24 hours to arrange your trial</li>
+          <li>First lesson is a relaxed discovery session</li>
+          <li>No commitment required after your trial</li>
+          <li>Flexible lesson times including evenings and weekends</li>
+          <li>All ages and skill levels welcome</li>
+        </ul>
+      </div>
+
+      <div class="aside-card">
+        <h3>Lesson Options</h3>
+        <ul>
+          <li>30-minute lessons — great for younger beginners</li>
+          <li>45-minute lessons — balanced pace for most students</li>
+          <li>60-minute lessons — deep dives for advanced students</li>
+          <li>In-studio or online — your choice</li>
+        </ul>
+      </div>
+
+      <div class="aside-card contact-info">
+        <h3>Prefer to call?</h3>
+        <p>We're happy to chat before you commit to anything.</p>
+        <p><a href="tel:+61400000000">+61 400 000 000</a></p>
+        <p><a href="mailto:hello@musicdepot.com.au">hello@musicdepot.com.au</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
