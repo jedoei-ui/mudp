@@ -110,26 +110,62 @@
       transform: translateX(-50%);
       display: flex;
       gap: 2px;
-      opacity: 0.07;
+      opacity: 0.13;
     }
 
     .key-w {
       width: 48px;
       height: 220px;
-      background: #f5f5f7;
-      border-radius: 0 0 6px 6px;
-      border: 1px solid #333;
+      background: linear-gradient(180deg, #e8e8e8, #c8c8c8);
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #555;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-w.press {
+      transform: translateY(4px) scaleY(0.97);
+      background: linear-gradient(180deg, var(--accent-light), var(--accent));
     }
 
     .key-b {
       width: 30px;
       height: 140px;
-      background: #1c1c1e;
+      background: linear-gradient(180deg, #333, #111);
       margin: 0 -16px;
       position: relative;
       z-index: 2;
-      border-radius: 0 0 4px 4px;
-      border: 1px solid #444;
+      border-radius: 0 0 5px 5px;
+      border: 1px solid #666;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-b.press {
+      transform: translateY(4px);
+      background: linear-gradient(180deg, var(--accent), #8a6030);
+    }
+
+    /* Floating music notes */
+    .notes-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .note {
+      position: absolute;
+      font-size: 28px;
+      color: var(--accent);
+      opacity: 0;
+      animation: floatNote linear infinite;
+      user-select: none;
+    }
+
+    @keyframes floatNote {
+      0%   { opacity: 0; transform: translateY(0) rotate(-10deg) scale(0.8); }
+      10%  { opacity: 0.18; }
+      80%  { opacity: 0.12; }
+      100% { opacity: 0; transform: translateY(-320px) rotate(20deg) scale(1.1); }
     }
 
     .hero-eyebrow {
@@ -272,6 +308,149 @@
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── STAFF DIVIDER ── */
+    .staff-divider {
+      height: 80px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .staff-lines {
+      width: 100%;
+      max-width: 900px;
+      height: 60px;
+      position: relative;
+    }
+
+    .staff-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: rgba(200,169,110,0.2);
+    }
+
+    .staff-line:nth-child(1) { top: 10px; }
+    .staff-line:nth-child(2) { top: 22px; }
+    .staff-line:nth-child(3) { top: 34px; }
+    .staff-line:nth-child(4) { top: 46px; }
+    .staff-line:nth-child(5) { top: 58px; }
+
+    .treble-clef {
+      position: absolute;
+      left: 40px;
+      top: -8px;
+      font-size: 72px;
+      line-height: 1;
+      color: rgba(200,169,110,0.25);
+      font-family: serif;
+    }
+
+    .staff-note {
+      position: absolute;
+      width: 14px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.3);
+      transform: rotate(-15deg);
+    }
+
+    /* ── PLAYABLE PIANO SECTION ── */
+    .play-piano {
+      padding: 120px 48px;
+      background: var(--black);
+      text-align: center;
+    }
+
+    .play-piano .section-sub { margin-top: 16px; margin-bottom: 64px; }
+
+    .piano-wrap {
+      display: inline-flex;
+      background: linear-gradient(180deg, #1a0e00, #0a0a0a);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 16px;
+      padding: 32px 32px 0;
+      gap: 0;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.08);
+      overflow: hidden;
+    }
+
+    .piano-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 32px;
+      background: linear-gradient(180deg, rgba(200,169,110,0.06), transparent);
+    }
+
+    .pk-w {
+      width: 52px;
+      height: 200px;
+      background: linear-gradient(180deg, #f8f6f0 0%, #e8e4dc 70%, #d8d4cc 100%);
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #bbb;
+      border-top: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.08s, transform 0.08s;
+      box-shadow: inset 0 -4px 8px rgba(0,0,0,0.1), 2px 0 4px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 12px;
+      font-size: 11px;
+      color: rgba(0,0,0,0.25);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+
+    .pk-w:active, .pk-w.active {
+      background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%);
+      transform: translateY(3px) scaleY(0.98);
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
+      color: rgba(0,0,0,0.5);
+    }
+
+    .pk-b {
+      width: 34px;
+      height: 124px;
+      background: linear-gradient(180deg, #2c2c2c 0%, #111 60%, #0a0a0a 100%);
+      border-radius: 0 0 6px 6px;
+      cursor: pointer;
+      position: absolute;
+      z-index: 2;
+      transition: background 0.08s, transform 0.08s;
+      box-shadow: 2px 4px 8px rgba(0,0,0,0.6), inset 0 -2px 4px rgba(255,255,255,0.05);
+      top: 32px;
+      user-select: none;
+    }
+
+    .pk-b:active, .pk-b.active {
+      background: linear-gradient(180deg, var(--accent) 0%, #7a5020 100%);
+      transform: translateY(2px);
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .piano-container {
+      position: relative;
+      display: flex;
+    }
+
+    .key-hint {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--grey-text);
+      letter-spacing: 0.06em;
+      padding-bottom: 32px;
+      display: block;
+    }
 
     /* ── STATEMENT SECTION ── */
     .statement {
@@ -730,6 +909,39 @@
       color: var(--grey-text);
     }
 
+    .footer-keys {
+      width: 100%;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      overflow: hidden;
+      opacity: 0.12;
+      padding-bottom: 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .fk-w {
+      width: 32px;
+      height: 56px;
+      background: linear-gradient(180deg, #ddd, #bbb);
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #555;
+      border-top: none;
+      flex-shrink: 0;
+    }
+
+    .fk-b {
+      width: 20px;
+      height: 36px;
+      background: #222;
+      border-radius: 0 0 3px 3px;
+      margin: 0 -11px;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
@@ -772,8 +984,11 @@
 <section class="hero">
   <div class="hero-bg"></div>
 
+  <!-- Floating music notes -->
+  <div class="notes-bg" id="notesContainer"></div>
+
   <!-- Piano keys decoration -->
-  <div class="piano-keys">
+  <div class="piano-keys" id="heroPianoKeys">
     <div class="key-w"></div><div class="key-b"></div>
     <div class="key-w"></div><div class="key-b"></div>
     <div class="key-w"></div>
@@ -802,6 +1017,26 @@
   </div>
 </section>
 
+<!-- STAFF DIVIDER -->
+<div class="staff-divider">
+  <div class="staff-lines">
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="treble-clef">𝄞</div>
+    <div class="staff-note" style="left:120px;top:4px;"></div>
+    <div class="staff-note" style="left:200px;top:16px;"></div>
+    <div class="staff-note" style="left:280px;top:28px;"></div>
+    <div class="staff-note" style="left:360px;top:10px;"></div>
+    <div class="staff-note" style="left:440px;top:22px;"></div>
+    <div class="staff-note" style="left:520px;top:4px;"></div>
+    <div class="staff-note" style="left:600px;top:34px;"></div>
+    <div class="staff-note" style="left:680px;top:16px;"></div>
+  </div>
+</div>
+
 <!-- STATEMENT -->
 <section class="statement">
   <p class="reveal">
@@ -809,6 +1044,20 @@
     It's the <em>craft of musicianship</em> — taught with intention, patience,
     and a method tailored precisely to who you are.
   </p>
+</section>
+
+<!-- PLAYABLE PIANO -->
+<section class="play-piano">
+  <p class="eyebrow reveal">Try it yourself</p>
+  <h2 class="section-title reveal reveal-delay-1">Every journey starts<br>with a single key</h2>
+  <p class="section-sub reveal reveal-delay-2">Click the keys below — or use your keyboard (A–K for white, W E T Y U for black).</p>
+
+  <div class="reveal reveal-delay-3">
+    <div class="piano-wrap">
+      <div class="piano-container" id="pianoContainer"></div>
+    </div>
+    <span class="key-hint">♩ Click any key to hear it play</span>
+  </div>
 </section>
 
 <!-- PILLARS -->
@@ -983,6 +1232,9 @@
   </div>
 </section>
 
+<!-- FOOTER PIANO KEYS STRIP -->
+<div class="footer-keys" id="footerKeys"></div>
+
 <!-- FOOTER -->
 <footer>
   <a href="#" class="footer-logo">Music<span>Depot</span></a>
@@ -997,7 +1249,7 @@
 </footer>
 
 <script>
-  // Scroll reveal
+  // ── SCROLL REVEAL ──
   const revealEls = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1007,29 +1259,209 @@
       }
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
   revealEls.forEach(el => observer.observe(el));
 
-  // Nav background on scroll
+  // ── NAV SCROLL ──
   const nav = document.querySelector('nav');
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) {
-      nav.style.background = 'rgba(10,10,10,0.92)';
-    } else {
-      nav.style.background = 'rgba(10,10,10,0.75)';
-    }
+    nav.style.background = window.scrollY > 80
+      ? 'rgba(10,10,10,0.92)' : 'rgba(10,10,10,0.75)';
   });
 
-  // Smooth anchor scrolling for internal links
+  // ── SMOOTH ANCHORS ──
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       const target = document.querySelector(link.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
+
+  // ── FLOATING MUSIC NOTES ──
+  const noteSymbols = ['♩','♪','♫','♬','𝄞','𝄢'];
+  const notesContainer = document.getElementById('notesContainer');
+  function spawnNote() {
+    const el = document.createElement('div');
+    el.className = 'note';
+    el.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.bottom = (Math.random() * 30) + '%';
+    el.style.fontSize = (18 + Math.random() * 22) + 'px';
+    el.style.animationDuration = (6 + Math.random() * 8) + 's';
+    el.style.animationDelay = '0s';
+    notesContainer.appendChild(el);
+    setTimeout(() => el.remove(), 14000);
+  }
+  setInterval(spawnNote, 900);
+
+  // ── HERO PIANO KEYS (animated ripple) ──
+  const heroPianoKeys = document.getElementById('heroPianoKeys');
+  const heroPattern = ['w','b','w','b','w','w','b','w','b','w','b','w','w','b','w','b','w','w','b','w','b','w','b','w'];
+  heroPattern.forEach(type => {
+    const k = document.createElement('div');
+    k.className = type === 'w' ? 'key-w' : 'key-b';
+    heroPianoKeys.appendChild(k);
+  });
+
+  // animate keys ripple
+  const heroKeyEls = heroPianoKeys.querySelectorAll('.key-w, .key-b');
+  let rippleIdx = 0;
+  setInterval(() => {
+    heroKeyEls.forEach(k => k.classList.remove('press'));
+    heroKeyEls[rippleIdx % heroKeyEls.length].classList.add('press');
+    rippleIdx++;
+  }, 380);
+
+  // ── WEB AUDIO PIANO ──
+  let audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
+  // Frequencies for C4 to E5 (15 notes)
+  const noteFreqs = [
+    261.63, 277.18, 293.66, 311.13, 329.63,
+    349.23, 369.99, 392.00, 415.30, 440.00,
+    466.16, 493.88, 523.25, 554.37, 587.33,
+    622.25, 659.25
+  ];
+
+  function playNote(freq) {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    const osc2 = ctx.createOscillator();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(freq * 2, ctx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
+
+    osc.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    osc.start(); osc2.start();
+    osc.stop(ctx.currentTime + 2);
+    osc2.stop(ctx.currentTime + 2);
+  }
+
+  // Build piano keyboard
+  // Layout: C D E F G A B C D E F G A B C D E  (C4–E5)
+  // Black keys: C# D# F# G# A# C# D# F# G#
+  const pianoContainer = document.getElementById('pianoContainer');
+
+  // Define the octave pattern: [type, noteIndex, label, keyboardKey]
+  const keys = [
+    {t:'w', f:0,  l:'C', k:'a'},
+    {t:'b', f:1,  l:'C#',k:'w'},
+    {t:'w', f:2,  l:'D', k:'s'},
+    {t:'b', f:3,  l:'D#',k:'e'},
+    {t:'w', f:4,  l:'E', k:'d'},
+    {t:'w', f:5,  l:'F', k:'f'},
+    {t:'b', f:6,  l:'F#',k:'t'},
+    {t:'w', f:7,  l:'G', k:'g'},
+    {t:'b', f:8,  l:'G#',k:'y'},
+    {t:'w', f:9,  l:'A', k:'h'},
+    {t:'b', f:10, l:'A#',k:'u'},
+    {t:'w', f:11, l:'B', k:'j'},
+    {t:'w', f:12, l:'C', k:'k'},
+    {t:'b', f:13, l:'C#',k:'o'},
+    {t:'w', f:14, l:'D', k:'l'},
+    {t:'b', f:15, l:'D#',k:';'},
+    {t:'w', f:16, l:'E', k:"'"},
+  ];
+
+  // Build white keys first, place black keys absolutely
+  const whiteKeys = keys.filter(k => k.t === 'w');
+  const blackKeys  = keys.filter(k => k.t === 'b');
+
+  const keyEls = {};
+
+  // White keys
+  whiteKeys.forEach(kd => {
+    const el = document.createElement('div');
+    el.className = 'pk-w';
+    el.textContent = kd.l;
+    el.dataset.freq = noteFreqs[kd.f];
+    el.dataset.key = kd.k;
+    pianoContainer.appendChild(el);
+    keyEls[kd.k] = el;
+
+    const trigger = () => {
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+      setTimeout(() => el.classList.remove('active'), 200);
+    };
+    el.addEventListener('mousedown', trigger);
+    el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
+  });
+
+  // Black keys — positioned absolutely between white keys
+  // We need to calculate position based on white key index
+  // White key positions: C=0, D=1, E=2, F=3, G=4, A=5, B=6, C=7, D=8, E=9, F=10, G=11, A=12, B=13, C=14, D=15, E=16
+  // White key width = 52px, gap = 0
+  const blackOffsets = {
+    1:  {after: 0}, // C# after C (white index 0)
+    3:  {after: 1}, // D# after D (white index 1)
+    6:  {after: 3}, // F# after F (white index 3)
+    8:  {after: 4}, // G# after G (white index 4)
+    10: {after: 5}, // A# after A (white index 5)
+    13: {after: 7}, // C# after C (white index 7)
+    15: {after: 8}, // D# after D (white index 8)
+  };
+
+  blackKeys.forEach(kd => {
+    const el = document.createElement('div');
+    el.className = 'pk-b';
+    el.dataset.freq = noteFreqs[kd.f];
+    el.dataset.key = kd.k;
+    const wIdx = blackOffsets[kd.f]?.after ?? 0;
+    el.style.left = (wIdx * 52 + 52 - 17) + 'px';
+    pianoContainer.appendChild(el);
+    keyEls[kd.k] = el;
+
+    const trigger = () => {
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+      setTimeout(() => el.classList.remove('active'), 200);
+    };
+    el.addEventListener('mousedown', trigger);
+    el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
+  });
+
+  // Keyboard support
+  const pressedKeys = new Set();
+  document.addEventListener('keydown', e => {
+    if (pressedKeys.has(e.key)) return;
+    const el = Object.values(keyEls).find(k => k.dataset.key === e.key.toLowerCase());
+    if (el) {
+      pressedKeys.add(e.key);
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+    }
+  });
+  document.addEventListener('keyup', e => {
+    pressedKeys.delete(e.key);
+    const el = Object.values(keyEls).find(k => k.dataset.key === e.key.toLowerCase());
+    if (el) el.classList.remove('active');
+  });
+
+  // ── FOOTER PIANO KEYS STRIP ──
+  const footerKeys = document.getElementById('footerKeys');
+  const fPattern = ['w','b','w','b','w','w','b','w','b','w','b','w'];
+  for (let i = 0; i < 6; i++) {
+    fPattern.forEach(type => {
+      const k = document.createElement('div');
+      k.className = type === 'w' ? 'fk-w' : 'fk-b';
+      footerKeys.appendChild(k);
+    });
+  }
 </script>
 </body>
 </html>
