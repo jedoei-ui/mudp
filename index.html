@@ -81,6 +81,25 @@
 
     .nav-cta:hover { background: var(--accent-light) !important; transform: scale(1.03); }
 
+    .nav-free {
+      background: transparent !important;
+      color: var(--accent) !important;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 100px;
+      border: 2px solid var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 12px !important;
+      transition: background 0.2s, color 0.2s, transform 0.15s !important;
+    }
+
+    .nav-free:hover {
+      background: var(--accent) !important;
+      color: var(--black) !important;
+      transform: scale(1.03);
+    }
+
     /* ── HERO ── */
     .hero {
       height: 100vh;
@@ -259,6 +278,26 @@
       border-color: var(--accent);
       background: rgba(200,169,110,0.08);
       transform: scale(1.03);
+    }
+
+    .btn-free {
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 13px;
+      background: linear-gradient(135deg, #fff, #e8d5a3);
+      box-shadow: 0 4px 24px rgba(255,255,255,0.15);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-free:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 32px rgba(255,255,255,0.22);
     }
 
     .scroll-hint {
@@ -977,6 +1016,7 @@
     <li><a href="#journey">Journey</a></li>
     <li><a href="#testimonials">Students</a></li>
     <li><a href="enroll.html" class="nav-cta">Enrol Now</a></li>
+    <li><a href="enroll.html" class="nav-free">Free Lesson</a></li>
   </ul>
 </nav>
 
@@ -1008,6 +1048,7 @@
   </p>
   <div class="hero-actions">
     <a href="enroll.html" class="btn-primary">Begin Your Journey</a>
+    <a href="enroll.html" class="btn-free">Get a Free Lesson</a>
     <a href="#experience" class="btn-ghost">See the Experience</a>
   </div>
 
