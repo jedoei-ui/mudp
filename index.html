@@ -3,305 +3,1465 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jed Oei</title>
+  <title>Music Depot — Piano Lessons</title>
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #000000;
-      --card: rgba(28, 28, 30, 0.85);
-      --text-primary: #f5f5f7;
-      --text-secondary: #98989d;
-      --accent: #2997ff;
-      --accent-hover: #47a8ff;
-      --border: rgba(255, 255, 255, 0.08);
-      --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-      --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.6);
+      --black: #0a0a0a;
+      --white: #f5f5f7;
+      --accent: #c8a96e;
+      --accent-light: #e8d5a3;
+      --grey: #1c1c1e;
+      --grey-mid: #3a3a3c;
+      --grey-text: #8e8e93;
+      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      min-height: 100vh;
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-      -webkit-font-smoothing: antialiased;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(10,10,10,0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s;
     }
 
-    /* Subtle gradient background blobs */
-    body::before {
-      content: "";
-      position: fixed;
-      top: -20%;
-      left: -10%;
-      width: 60vw;
-      height: 60vw;
-      background: radial-gradient(circle, rgba(41, 151, 255, 0.12) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
     }
 
-    body::after {
-      content: "";
-      position: fixed;
-      bottom: -20%;
-      right: -10%;
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, rgba(100, 210, 255, 0.08) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+    .nav-logo span { color: var(--accent); }
+
+    nav ul {
+      display: flex;
+      gap: 36px;
+      list-style: none;
     }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 480px;
+    nav ul a {
+      font-size: 14px;
+      color: rgba(245,245,247,0.7);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: var(--black) !important;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 100px;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+
+    .nav-cta:hover { background: var(--accent-light) !important; transform: scale(1.03); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 32px;
-      animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0 24px;
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,169,110,0.12) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0a0a 0%, #111 100%);
     }
 
-    /* Avatar */
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0071e3 0%, #64d2ff 100%);
+    /* Piano keys decoration */
+    .piano-keys {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 2px;
+      opacity: 0.13;
+    }
+
+    .key-w {
+      width: 48px;
+      height: 220px;
+      background: linear-gradient(180deg, #e8e8e8, #c8c8c8);
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #555;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-w.press {
+      transform: translateY(4px) scaleY(0.97);
+      background: linear-gradient(180deg, var(--accent-light), var(--accent));
+    }
+
+    .key-b {
+      width: 30px;
+      height: 140px;
+      background: linear-gradient(180deg, #333, #111);
+      margin: 0 -16px;
+      position: relative;
+      z-index: 2;
+      border-radius: 0 0 5px 5px;
+      border: 1px solid #666;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-b.press {
+      transform: translateY(4px);
+      background: linear-gradient(180deg, var(--accent), #8a6030);
+    }
+
+    /* Floating music notes */
+    .notes-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .note {
+      position: absolute;
+      font-size: 28px;
+      color: var(--accent);
+      opacity: 0;
+      animation: floatNote linear infinite;
+      user-select: none;
+    }
+
+    @keyframes floatNote {
+      0%   { opacity: 0; transform: translateY(0) rotate(-10deg) scale(0.8); }
+      10%  { opacity: 0.18; }
+      80%  { opacity: 0.12; }
+      100% { opacity: 0; transform: translateY(-320px) rotate(20deg) scale(1.1); }
+    }
+
+    .hero-eyebrow {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(52px, 9vw, 96px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.9s 0.35s forwards;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 300;
+      color: rgba(245,245,247,0.65);
+      max-width: 560px;
+      line-height: 1.55;
+      position: relative;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+
+    .hero-actions {
+      margin-top: 44px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s 0.65s forwards;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(200,169,110,0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-light);
+      transform: scale(1.03);
+      box-shadow: 0 8px 32px rgba(200,169,110,0.35);
+    }
+
+    .btn-ghost {
+      color: var(--accent);
+      font-size: 16px;
+      font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1.5px solid rgba(200,169,110,0.4);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      background: rgba(200,169,110,0.08);
+      transform: scale(1.03);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 1s 1.2s forwards;
+    }
+
+    .scroll-hint span {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey-text);
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 1.5px solid var(--grey-text);
+      border-bottom: 1.5px solid var(--grey-text);
+      transform: rotate(45deg);
+      animation: bounce 1.6s infinite;
+    }
+
+    /* ── SECTIONS SHARED ── */
+    section { position: relative; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(48px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── STAFF DIVIDER ── */
+    .staff-divider {
+      height: 80px;
+      background: var(--black);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 36px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: -1px;
-      box-shadow: 0 8px 24px rgba(0, 113, 227, 0.25);
-      flex-shrink: 0;
-      animation: fadeUp 0.8s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Profile card */
-    .profile {
+    .staff-lines {
+      width: 100%;
+      max-width: 900px;
+      height: 60px;
+      position: relative;
+    }
+
+    .staff-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: rgba(200,169,110,0.2);
+    }
+
+    .staff-line:nth-child(1) { top: 10px; }
+    .staff-line:nth-child(2) { top: 22px; }
+    .staff-line:nth-child(3) { top: 34px; }
+    .staff-line:nth-child(4) { top: 46px; }
+    .staff-line:nth-child(5) { top: 58px; }
+
+    .treble-clef {
+      position: absolute;
+      left: 40px;
+      top: -8px;
+      font-size: 72px;
+      line-height: 1;
+      color: rgba(200,169,110,0.25);
+      font-family: serif;
+    }
+
+    .staff-note {
+      position: absolute;
+      width: 14px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(200,169,110,0.3);
+      transform: rotate(-15deg);
+    }
+
+    /* ── PLAYABLE PIANO SECTION ── */
+    .play-piano {
+      padding: 120px 48px;
+      background: var(--black);
       text-align: center;
-      animation: fadeUp 0.8s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
-    .profile h1 {
-      font-size: 32px;
+    .play-piano .section-sub { margin-top: 16px; margin-bottom: 64px; }
+
+    .piano-wrap {
+      display: inline-flex;
+      background: linear-gradient(180deg, #1a0e00, #0a0a0a);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 16px;
+      padding: 32px 32px 0;
+      gap: 0;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.08);
+      overflow: hidden;
+    }
+
+    .piano-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 32px;
+      background: linear-gradient(180deg, rgba(200,169,110,0.06), transparent);
+    }
+
+    .pk-w {
+      width: 52px;
+      height: 200px;
+      background: linear-gradient(180deg, #f8f6f0 0%, #e8e4dc 70%, #d8d4cc 100%);
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #bbb;
+      border-top: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.08s, transform 0.08s;
+      box-shadow: inset 0 -4px 8px rgba(0,0,0,0.1), 2px 0 4px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 12px;
+      font-size: 11px;
+      color: rgba(0,0,0,0.25);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+
+    .pk-w:active, .pk-w.active {
+      background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%);
+      transform: translateY(3px) scaleY(0.98);
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
+      color: rgba(0,0,0,0.5);
+    }
+
+    .pk-b {
+      width: 34px;
+      height: 124px;
+      background: linear-gradient(180deg, #2c2c2c 0%, #111 60%, #0a0a0a 100%);
+      border-radius: 0 0 6px 6px;
+      cursor: pointer;
+      position: absolute;
+      z-index: 2;
+      transition: background 0.08s, transform 0.08s;
+      box-shadow: 2px 4px 8px rgba(0,0,0,0.6), inset 0 -2px 4px rgba(255,255,255,0.05);
+      top: 32px;
+      user-select: none;
+    }
+
+    .pk-b:active, .pk-b.active {
+      background: linear-gradient(180deg, var(--accent) 0%, #7a5020 100%);
+      transform: translateY(2px);
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .piano-container {
+      position: relative;
+      display: flex;
+    }
+
+    .key-hint {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--grey-text);
+      letter-spacing: 0.06em;
+      padding-bottom: 32px;
+      display: block;
+    }
+
+    /* ── STATEMENT SECTION ── */
+    .statement {
+      padding: 160px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--black) 0%, #0f0f10 100%);
+    }
+
+    .statement p {
+      font-size: clamp(28px, 4.5vw, 52px);
+      font-weight: 600;
+      line-height: 1.25;
+      max-width: 860px;
+      margin: 0 auto;
+      letter-spacing: -0.02em;
+      color: rgba(245,245,247,0.9);
+    }
+
+    .statement p em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    /* ── PILLARS ── */
+    .pillars {
+      padding: 120px 48px;
+      background: var(--grey);
+    }
+
+    .pillars-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
       font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--text-primary);
+      letter-spacing: -0.025em;
       line-height: 1.1;
     }
 
-    .profile p {
-      margin-top: 10px;
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      max-width: 340px;
+    .section-sub {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--grey-text);
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
     }
 
-    /* Links */
-    .links {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
-    .link-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: var(--card);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 22px;
-      text-decoration: none;
-      color: var(--text-primary);
-      box-shadow: var(--shadow);
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-                  box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-                  background 0.2s ease;
-      cursor: pointer;
+    .pillar-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 40px 36px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
     }
 
-    .link-card:hover {
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: var(--shadow-hover);
-      background: rgba(44, 44, 46, 0.95);
+    .pillar-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(200,169,110,0.3);
+      transform: translateY(-4px);
     }
 
-    .link-card:active {
-      transform: translateY(0) scale(0.99);
-      box-shadow: var(--shadow);
-    }
-
-    .link-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+    .pillar-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(200,169,110,0.2), rgba(200,169,110,0.05));
+      border: 1px solid rgba(200,169,110,0.25);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+
+    .pillar-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .pillar-card p {
+      font-size: 15px;
+      color: var(--grey-text);
+      line-height: 1.65;
+    }
+
+    /* ── EXPERIENCE SPLIT ── */
+    .experience {
+      padding: 160px 48px;
+      background: var(--black);
+    }
+
+    .experience-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .experience-text .eyebrow { margin-bottom: 16px; }
+
+    .experience-text h2 {
+      font-size: clamp(36px, 4.5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .experience-text p {
+      font-size: 17px;
+      color: var(--grey-text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .experience-text .btn-primary { display: inline-block; margin-top: 16px; }
+
+    .experience-visual {
+      position: relative;
+      height: 480px;
+    }
+
+    .visual-card {
+      position: absolute;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .visual-main {
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0; left: 0;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Animated piano graphic */
+    .piano-graphic {
+      display: flex;
+      gap: 3px;
+      position: relative;
+    }
+
+    .pg-w {
+      width: 36px;
+      height: 160px;
+      background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
+      border-radius: 0 0 6px 6px;
+      border: 1px solid #ccc;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .pg-w:hover { background: linear-gradient(180deg, var(--accent-light), var(--accent)); }
+
+    .pg-b {
+      width: 24px;
+      height: 100px;
+      background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+      border-radius: 0 0 4px 4px;
+      margin: 0 -13px;
+      position: relative;
+      z-index: 2;
+      transition: background 0.1s;
+    }
+
+    .pg-b:hover { background: linear-gradient(180deg, var(--accent), #a07830); }
+
+    .stat-badge {
+      position: absolute;
+      bottom: 0;
+      right: -24px;
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px 24px;
+      min-width: 160px;
+    }
+
+    .stat-badge .num {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-badge .label {
+      font-size: 13px;
+      color: var(--grey-text);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ── JOURNEY ── */
+    .journey {
+      padding: 140px 48px;
+      background: var(--grey);
+    }
+
+    .journey-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 96px;
+    }
+
+    .journey-steps {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 32px;
+      padding-bottom: 56px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 31px;
+      top: 56px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(200,169,110,0.4), rgba(200,169,110,0.05));
+    }
+
+    .step-num {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+      background: var(--grey);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding-top: 16px;
+      margin-bottom: 12px;
+    }
+
+    .step-body p {
+      font-size: 16px;
+      color: var(--grey-text);
+      line-height: 1.7;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 140px 48px;
+      background: var(--black);
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .t-card {
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 36px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .t-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200,169,110,0.25);
+    }
+
+    .t-stars {
+      color: var(--accent);
+      font-size: 18px;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .t-card blockquote {
+      font-size: 16px;
+      color: rgba(245,245,247,0.85);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 28px;
+    }
+
+    .t-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .t-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
       flex-shrink: 0;
     }
 
-    .link-icon svg {
-      width: 22px;
-      height: 22px;
-    }
+    .t-avatar.a { background: linear-gradient(135deg, #5e5ce6, #9b59b6); }
+    .t-avatar.b { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .t-avatar.c { background: linear-gradient(135deg, #26de81, #20bf6b); }
 
-    .link-icon.phone  { background: linear-gradient(135deg, #34c759, #30d158); }
-    .link-icon.email  { background: linear-gradient(135deg, #0071e3, #34aadc); }
-    .link-icon.linkedin { background: linear-gradient(135deg, #0077b5, #00a0dc); }
+    .t-name { font-size: 15px; font-weight: 600; }
+    .t-role { font-size: 13px; color: var(--grey-text); margin-top: 2px; }
 
-    .link-text {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .link-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 2px;
-    }
-
-    .link-value {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text-primary);
-      white-space: nowrap;
+    /* ── CTA ── */
+    .cta-section {
+      padding: 160px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--black) 0%, #0d0d0e 100%);
+      position: relative;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .link-arrow {
-      color: var(--text-secondary);
-      opacity: 0.5;
-      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    .cta-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    .link-card:hover .link-arrow {
-      opacity: 1;
-      transform: translateX(3px);
+    .cta-section h2 {
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      max-width: 720px;
+      margin: 0 auto 24px;
+      position: relative;
     }
 
-    /* Staggered animation for link cards */
-    .links .link-card:nth-child(1) { animation: fadeUp 0.7s 0.18s cubic-bezier(0.22, 1, 0.36, 1) both; }
-    .links .link-card:nth-child(2) { animation: fadeUp 0.7s 0.26s cubic-bezier(0.22, 1, 0.36, 1) both; }
-    .links .link-card:nth-child(3) { animation: fadeUp 0.7s 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .cta-section p {
+      font-size: 19px;
+      color: var(--grey-text);
+      max-width: 480px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+      position: relative;
+    }
 
-    /* Footer */
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .btn-large {
+      font-size: 18px;
+      padding: 18px 40px;
+    }
+
+    /* ── FOOTER ── */
     footer {
-      font-size: 12px;
-      color: var(--text-secondary);
-      opacity: 0.6;
-      animation: fadeUp 0.7s 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 24px;
+      background: var(--black);
     }
 
-    @media (max-width: 420px) {
-      .profile h1 { font-size: 26px; }
-      .link-card { padding: 15px 18px; }
+    .footer-logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--grey-text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--grey-text);
+    }
+
+    .footer-keys {
+      width: 100%;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      overflow: hidden;
+      opacity: 0.12;
+      padding-bottom: 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .fk-w {
+      width: 32px;
+      height: 56px;
+      background: linear-gradient(180deg, #ddd, #bbb);
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #555;
+      border-top: none;
+      flex-shrink: 0;
+    }
+
+    .fk-b {
+      width: 20px;
+      height: 36px;
+      background: #222;
+      border-radius: 0 0 3px 3px;
+      margin: 0 -11px;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      nav ul { display: none; }
+      .pillars { padding: 80px 24px; }
+      .experience { padding: 80px 24px; }
+      .experience-inner { grid-template-columns: 1fr; gap: 48px; }
+      .experience-visual { height: 300px; }
+      .stat-badge { right: 0; }
+      .journey { padding: 80px 24px; }
+      .testimonials { padding: 80px 24px; }
+      footer { flex-direction: column; text-align: center; padding: 40px 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
 
-    <div class="avatar">JO</div>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Music<span>Depot</span></a>
+  <ul>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#testimonials">Students</a></li>
+    <li><a href="enroll.html" class="nav-cta">Enrol Now</a></li>
+  </ul>
+</nav>
 
-    <div class="profile">
-      <h1>Jed Oei</h1>
-      <p>Year 2 student at QUT studying Construction Management &amp; Quantity Surveying</p>
-    </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
 
-    <div class="links">
+  <!-- Floating music notes -->
+  <div class="notes-bg" id="notesContainer"></div>
 
-      <!-- Phone -->
-      <a class="link-card" href="tel:0466039714">
-        <div class="link-icon phone">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <div class="link-label">Phone</div>
-          <div class="link-value">0466 039 714</div>
-        </div>
-        <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-
-      <!-- Email -->
-      <a class="link-card" href="mailto:jedoei@gmail.com">
-        <div class="link-icon email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <div class="link-label">Email</div>
-          <div class="link-value">jedoei@gmail.com</div>
-        </div>
-        <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-
-      <!-- LinkedIn -->
-      <a class="link-card" href="https://www.linkedin.com/in/jed-oei/" target="_blank" rel="noopener noreferrer">
-        <div class="link-icon linkedin">
-          <svg viewBox="0 0 24 24" fill="#fff">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </div>
-        <div class="link-text">
-          <div class="link-label">LinkedIn</div>
-          <div class="link-value">linkedin.com/in/jed-oei</div>
-        </div>
-        <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-
-    </div>
-
-    <footer>&copy; 2026 Jed Oei</footer>
-
+  <!-- Piano keys decoration -->
+  <div class="piano-keys" id="heroPianoKeys">
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div><div class="key-b"></div>
+    <div class="key-w"></div>
   </div>
+
+  <p class="hero-eyebrow">Music Depot Piano Studio</p>
+  <h1>Play like you've<br>always <em>imagined.</em></h1>
+  <p class="hero-sub">
+    A boutique piano teaching experience built around you — your pace, your goals, your music.
+  </p>
+  <div class="hero-actions">
+    <a href="enroll.html" class="btn-primary">Begin Your Journey</a>
+    <a href="#experience" class="btn-ghost">See the Experience</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- STAFF DIVIDER -->
+<div class="staff-divider">
+  <div class="staff-lines">
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="treble-clef">𝄞</div>
+    <div class="staff-note" style="left:120px;top:4px;"></div>
+    <div class="staff-note" style="left:200px;top:16px;"></div>
+    <div class="staff-note" style="left:280px;top:28px;"></div>
+    <div class="staff-note" style="left:360px;top:10px;"></div>
+    <div class="staff-note" style="left:440px;top:22px;"></div>
+    <div class="staff-note" style="left:520px;top:4px;"></div>
+    <div class="staff-note" style="left:600px;top:34px;"></div>
+    <div class="staff-note" style="left:680px;top:16px;"></div>
+  </div>
+</div>
+
+<!-- STATEMENT -->
+<section class="statement">
+  <p class="reveal">
+    This isn't just piano lessons.
+    It's the <em>craft of musicianship</em> — taught with intention, patience,
+    and a method tailored precisely to who you are.
+  </p>
+</section>
+
+<!-- PLAYABLE PIANO -->
+<section class="play-piano">
+  <p class="eyebrow reveal">Try it yourself</p>
+  <h2 class="section-title reveal reveal-delay-1">Every journey starts<br>with a single key</h2>
+  <p class="section-sub reveal reveal-delay-2">Click the keys below — or use your keyboard (A–K for white, W E T Y U for black).</p>
+
+  <div class="reveal reveal-delay-3">
+    <div class="piano-wrap">
+      <div class="piano-container" id="pianoContainer"></div>
+    </div>
+    <span class="key-hint">♩ Click any key to hear it play</span>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars" id="experience">
+  <div class="pillars-header">
+    <p class="eyebrow reveal">What sets us apart</p>
+    <h2 class="section-title reveal reveal-delay-1">A studio built<br>around the student</h2>
+    <p class="section-sub reveal reveal-delay-2">Every element of Music Depot is designed to accelerate your progress while keeping the joy of music alive.</p>
+  </div>
+
+  <div class="pillars-grid">
+    <div class="pillar-card reveal">
+      <div class="pillar-icon">🎯</div>
+      <h3>Personalised Curriculum</h3>
+      <p>No two students follow the same path. Your lessons are designed around your musical taste, learning pace, and long-term goals.</p>
+    </div>
+    <div class="pillar-card reveal reveal-delay-1">
+      <div class="pillar-icon">🎶</div>
+      <h3>Genre-Fluid Teaching</h3>
+      <p>Classical foundations meet contemporary styles. Learn the music you actually love — from Bach to Billy Joel and beyond.</p>
+    </div>
+    <div class="pillar-card reveal reveal-delay-2">
+      <div class="pillar-icon">🧠</div>
+      <h3>Music Theory, Simplified</h3>
+      <p>Theory without the textbook dread. We weave it naturally into playing so you understand music, not just notes on a page.</p>
+    </div>
+    <div class="pillar-card reveal reveal-delay-3">
+      <div class="pillar-icon">🏆</div>
+      <h3>Performance Ready</h3>
+      <p>Regular recitals and milestones build confidence and performance skills — so you're always ready to share your music.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE SPLIT -->
+<section class="experience">
+  <div class="experience-inner">
+    <div class="experience-text">
+      <p class="eyebrow reveal">The Music Depot Difference</p>
+      <h2 class="reveal reveal-delay-1">Lessons that feel<br>like a conversation</h2>
+      <p class="reveal reveal-delay-2">
+        We listen before we teach. Your first lesson is a discovery session — we learn about your musical history, what excites you, and where you want to go.
+      </p>
+      <p class="reveal reveal-delay-2">
+        From there, every session builds on the last. Progress is visible, celebrated, and always moving forward.
+      </p>
+      <a href="enroll.html" class="btn-primary reveal reveal-delay-3">Book a Trial Lesson</a>
+    </div>
+
+    <div class="experience-visual reveal reveal-delay-2">
+      <div class="visual-card visual-main">
+        <div class="piano-graphic">
+          <div class="pg-w"></div>
+          <div class="pg-b"></div>
+          <div class="pg-w"></div>
+          <div class="pg-b"></div>
+          <div class="pg-w"></div>
+          <div class="pg-w"></div>
+          <div class="pg-b"></div>
+          <div class="pg-w"></div>
+          <div class="pg-b"></div>
+          <div class="pg-w"></div>
+          <div class="pg-b"></div>
+          <div class="pg-w"></div>
+        </div>
+      </div>
+      <div class="stat-badge reveal reveal-delay-4">
+        <div class="num">98%</div>
+        <div class="label">of students continue<br>after their trial</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="journey" id="journey">
+  <div class="journey-header">
+    <p class="eyebrow reveal">Your Path</p>
+    <h2 class="section-title reveal reveal-delay-1">From first note<br>to full song</h2>
+    <p class="section-sub reveal reveal-delay-2">A clear, rewarding progression designed for lasting results.</p>
+  </div>
+
+  <div class="journey-steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Discovery Session</h3>
+        <p>A relaxed first lesson where we explore your musical background, your goals, and what kind of pianist you want to become. No pressure — just music.</p>
+      </div>
+    </div>
+
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Foundations</h3>
+        <p>We build strong technique, hand coordination, and reading skills through music you actually enjoy playing — not just exercises.</p>
+      </div>
+    </div>
+
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Repertoire & Expression</h3>
+        <p>With solid foundations in place, we dive into full pieces — expanding your repertoire and developing your unique musical voice.</p>
+      </div>
+    </div>
+
+    <div class="step reveal reveal-delay-3">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Performance & Mastery</h3>
+        <p>Prepare for exams, recitals, or simply the joy of playing beautifully for an audience. This is where all the work pays off.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-header">
+    <p class="eyebrow reveal">Student Stories</p>
+    <h2 class="section-title reveal reveal-delay-1">Hear it from them</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="t-card reveal">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>"I tried three different teachers before Music Depot. This is the only place where I actually look forward to every single lesson. I've learned more in 4 months here than in 2 years elsewhere."</blockquote>
+      <div class="t-author">
+        <div class="t-avatar a">S</div>
+        <div>
+          <div class="t-name">Sarah K.</div>
+          <div class="t-role">Adult beginner, 4 months in</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-card reveal reveal-delay-1">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>"My 8-year-old was nervous to start. Now she practises without being asked and performed at the end-of-year recital with complete confidence. It's been transformational."</blockquote>
+      <div class="t-author">
+        <div class="t-avatar b">M</div>
+        <div>
+          <div class="t-name">Michael T.</div>
+          <div class="t-role">Parent of student, 1 year</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-card reveal reveal-delay-2">
+      <div class="t-stars">★★★★★</div>
+      <blockquote>"I came wanting to play jazz. They didn't try to change that — they built everything around it. Now I'm improvising and composing my own pieces. Genuinely life-changing."</blockquote>
+      <div class="t-author">
+        <div class="t-avatar c">J</div>
+        <div>
+          <div class="t-name">James R.</div>
+          <div class="t-role">Intermediate, 18 months</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <h2 class="reveal">Ready to start playing?</h2>
+  <p class="reveal reveal-delay-1">Your first lesson is risk-free. Come discover what music can mean to you.</p>
+  <div class="cta-actions">
+    <a href="enroll.html" class="btn-primary btn-large reveal reveal-delay-2">Enrol at Music Depot</a>
+    <a href="contact.html" class="btn-ghost btn-large reveal reveal-delay-3">Ask a Question</a>
+  </div>
+</section>
+
+<!-- FOOTER PIANO KEYS STRIP -->
+<div class="footer-keys" id="footerKeys"></div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Music<span>Depot</span></a>
+  <ul class="footer-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#testimonials">Students</a></li>
+    <li><a href="enroll.html">Enrol</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Music Depot. All rights reserved.</span>
+</footer>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── NAV SCROLL ──
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 80
+      ? 'rgba(10,10,10,0.92)' : 'rgba(10,10,10,0.75)';
+  });
+
+  // ── SMOOTH ANCHORS ──
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ── FLOATING MUSIC NOTES ──
+  const noteSymbols = ['♩','♪','♫','♬','𝄞','𝄢'];
+  const notesContainer = document.getElementById('notesContainer');
+  function spawnNote() {
+    const el = document.createElement('div');
+    el.className = 'note';
+    el.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.bottom = (Math.random() * 30) + '%';
+    el.style.fontSize = (18 + Math.random() * 22) + 'px';
+    el.style.animationDuration = (6 + Math.random() * 8) + 's';
+    el.style.animationDelay = '0s';
+    notesContainer.appendChild(el);
+    setTimeout(() => el.remove(), 14000);
+  }
+  setInterval(spawnNote, 900);
+
+  // ── HERO PIANO KEYS (animated ripple) ──
+  const heroPianoKeys = document.getElementById('heroPianoKeys');
+  const heroPattern = ['w','b','w','b','w','w','b','w','b','w','b','w','w','b','w','b','w','w','b','w','b','w','b','w'];
+  heroPattern.forEach(type => {
+    const k = document.createElement('div');
+    k.className = type === 'w' ? 'key-w' : 'key-b';
+    heroPianoKeys.appendChild(k);
+  });
+
+  // animate keys ripple
+  const heroKeyEls = heroPianoKeys.querySelectorAll('.key-w, .key-b');
+  let rippleIdx = 0;
+  setInterval(() => {
+    heroKeyEls.forEach(k => k.classList.remove('press'));
+    heroKeyEls[rippleIdx % heroKeyEls.length].classList.add('press');
+    rippleIdx++;
+  }, 380);
+
+  // ── WEB AUDIO PIANO ──
+  let audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
+  // Frequencies for C4 to E5 (15 notes)
+  const noteFreqs = [
+    261.63, 277.18, 293.66, 311.13, 329.63,
+    349.23, 369.99, 392.00, 415.30, 440.00,
+    466.16, 493.88, 523.25, 554.37, 587.33,
+    622.25, 659.25
+  ];
+
+  function playNote(freq) {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    const osc2 = ctx.createOscillator();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(freq * 2, ctx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
+
+    osc.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    osc.start(); osc2.start();
+    osc.stop(ctx.currentTime + 2);
+    osc2.stop(ctx.currentTime + 2);
+  }
+
+  // Build piano keyboard
+  // Layout: C D E F G A B C D E F G A B C D E  (C4–E5)
+  // Black keys: C# D# F# G# A# C# D# F# G#
+  const pianoContainer = document.getElementById('pianoContainer');
+
+  // Define the octave pattern: [type, noteIndex, label, keyboardKey]
+  const keys = [
+    {t:'w', f:0,  l:'C', k:'a'},
+    {t:'b', f:1,  l:'C#',k:'w'},
+    {t:'w', f:2,  l:'D', k:'s'},
+    {t:'b', f:3,  l:'D#',k:'e'},
+    {t:'w', f:4,  l:'E', k:'d'},
+    {t:'w', f:5,  l:'F', k:'f'},
+    {t:'b', f:6,  l:'F#',k:'t'},
+    {t:'w', f:7,  l:'G', k:'g'},
+    {t:'b', f:8,  l:'G#',k:'y'},
+    {t:'w', f:9,  l:'A', k:'h'},
+    {t:'b', f:10, l:'A#',k:'u'},
+    {t:'w', f:11, l:'B', k:'j'},
+    {t:'w', f:12, l:'C', k:'k'},
+    {t:'b', f:13, l:'C#',k:'o'},
+    {t:'w', f:14, l:'D', k:'l'},
+    {t:'b', f:15, l:'D#',k:';'},
+    {t:'w', f:16, l:'E', k:"'"},
+  ];
+
+  // Build white keys first, place black keys absolutely
+  const whiteKeys = keys.filter(k => k.t === 'w');
+  const blackKeys  = keys.filter(k => k.t === 'b');
+
+  const keyEls = {};
+
+  // White keys
+  whiteKeys.forEach(kd => {
+    const el = document.createElement('div');
+    el.className = 'pk-w';
+    el.textContent = kd.l;
+    el.dataset.freq = noteFreqs[kd.f];
+    el.dataset.key = kd.k;
+    pianoContainer.appendChild(el);
+    keyEls[kd.k] = el;
+
+    const trigger = () => {
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+      setTimeout(() => el.classList.remove('active'), 200);
+    };
+    el.addEventListener('mousedown', trigger);
+    el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
+  });
+
+  // Black keys — positioned absolutely between white keys
+  // We need to calculate position based on white key index
+  // White key positions: C=0, D=1, E=2, F=3, G=4, A=5, B=6, C=7, D=8, E=9, F=10, G=11, A=12, B=13, C=14, D=15, E=16
+  // White key width = 52px, gap = 0
+  const blackOffsets = {
+    1:  {after: 0}, // C# after C (white index 0)
+    3:  {after: 1}, // D# after D (white index 1)
+    6:  {after: 3}, // F# after F (white index 3)
+    8:  {after: 4}, // G# after G (white index 4)
+    10: {after: 5}, // A# after A (white index 5)
+    13: {after: 7}, // C# after C (white index 7)
+    15: {after: 8}, // D# after D (white index 8)
+  };
+
+  blackKeys.forEach(kd => {
+    const el = document.createElement('div');
+    el.className = 'pk-b';
+    el.dataset.freq = noteFreqs[kd.f];
+    el.dataset.key = kd.k;
+    const wIdx = blackOffsets[kd.f]?.after ?? 0;
+    el.style.left = (wIdx * 52 + 52 - 17) + 'px';
+    pianoContainer.appendChild(el);
+    keyEls[kd.k] = el;
+
+    const trigger = () => {
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+      setTimeout(() => el.classList.remove('active'), 200);
+    };
+    el.addEventListener('mousedown', trigger);
+    el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
+  });
+
+  // Keyboard support
+  const pressedKeys = new Set();
+  document.addEventListener('keydown', e => {
+    if (pressedKeys.has(e.key)) return;
+    const el = Object.values(keyEls).find(k => k.dataset.key === e.key.toLowerCase());
+    if (el) {
+      pressedKeys.add(e.key);
+      playNote(parseFloat(el.dataset.freq));
+      el.classList.add('active');
+    }
+  });
+  document.addEventListener('keyup', e => {
+    pressedKeys.delete(e.key);
+    const el = Object.values(keyEls).find(k => k.dataset.key === e.key.toLowerCase());
+    if (el) el.classList.remove('active');
+  });
+
+  // ── FOOTER PIANO KEYS STRIP ──
+  const footerKeys = document.getElementById('footerKeys');
+  const fPattern = ['w','b','w','b','w','w','b','w','b','w','b','w'];
+  for (let i = 0; i < 6; i++) {
+    fPattern.forEach(type => {
+      const k = document.createElement('div');
+      k.className = type === 'w' ? 'fk-w' : 'fk-b';
+      footerKeys.appendChild(k);
+    });
+  }
+</script>
 </body>
 </html>
