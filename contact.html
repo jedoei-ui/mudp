@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Music Depot</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f5f7;
+      --accent: #c8a96e;
+      --accent-light: #e8d5a3;
+      --grey: #1c1c1e;
+      --grey-text: #8e8e93;
+      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+
+    .nav-back:hover { gap: 10px; }
+
+    .contact-page {
+      padding: 120px 48px 80px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .page-eyebrow {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .page-title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+
+    .page-sub {
+      font-size: 18px;
+      color: var(--grey-text);
+      line-height: 1.6;
+      max-width: 520px;
+      margin-bottom: 64px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    /* Form */
+    form { display: flex; flex-direction: column; gap: 20px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--grey-text);
+    }
+
+    input, textarea {
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: var(--font);
+      font-size: 16px;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--grey-text); }
+
+    input:focus, textarea:focus {
+      border-color: rgba(200,169,110,0.5);
+      box-shadow: 0 0 0 3px rgba(200,169,110,0.1);
+    }
+
+    textarea { resize: vertical; min-height: 140px; }
+
+    .submit-btn {
+      background: var(--accent);
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(200,169,110,0.2);
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-light);
+      transform: scale(1.02);
+      box-shadow: 0 8px 32px rgba(200,169,110,0.3);
+    }
+
+    /* Contact info cards */
+    .contact-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-card {
+      background: var(--grey);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .info-card:hover {
+      border-color: rgba(200,169,110,0.25);
+      transform: translateY(-3px);
+    }
+
+    .info-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(200,169,110,0.2), rgba(200,169,110,0.05));
+      border: 1px solid rgba(200,169,110,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .info-body h3 {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--grey-text);
+      margin-bottom: 6px;
+    }
+
+    .info-body a, .info-body p {
+      font-size: 17px;
+      color: var(--white);
+      text-decoration: none;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .info-body a { transition: color 0.2s; }
+    .info-body a:hover { color: var(--accent); }
+
+    .hours-list {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .hours-list li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      color: var(--grey-text);
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .hours-list li:last-child { border-bottom: none; }
+    .hours-list li span { color: var(--white); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .contact-page { padding: 100px 24px 60px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Music<span>Depot</span></a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="contact-page">
+  <p class="page-eyebrow">Get in Touch</p>
+  <h1 class="page-title">Let's talk<br>music.</h1>
+  <p class="page-sub">Have a question or want to learn more? Send us a message and we'll get back to you within 24 hours.</p>
+
+  <div class="contact-grid">
+    <form>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full name" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Phone (optional)</label>
+        <input type="tel" placeholder="+61 0481 132 760" />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Ask us anything — lesson availability, pricing, what to expect..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+
+    <div class="contact-aside">
+      <div class="info-card">
+        <div class="info-icon">📞</div>
+        <div class="info-body">
+          <h3>Phone</h3>
+          <a href="tel:+610481132760">+61 0481 132 760</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">✉️</div>
+        <div class="info-body">
+          <h3>Email</h3>
+          <a href="mailto:hello@musicdepot.com.au">hello@musicdepot.com.au</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🕐</div>
+        <div class="info-body">
+          <h3>Studio Hours</h3>
+          <ul class="hours-list">
+            <li>Monday – Friday <span>9am – 7pm</span></li>
+            <li>Saturday <span>9am – 5pm</span></li>
+            <li>Sunday <span>By appointment</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🎹</div>
+        <div class="info-body">
+          <h3>Free Trial</h3>
+          <p>First lesson is completely free — no commitment required.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
