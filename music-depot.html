@@ -4,27 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Music Depot — Piano Lessons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black: #0a0a0a;
-      --white: #f5f5f7;
-      --accent: #c8a96e;
-      --accent-light: #e8d5a3;
-      --grey: #1c1c1e;
-      --grey-mid: #3a3a3c;
-      --grey-text: #8e8e93;
-      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --cream: #f8f4ee;
+      --cream-alt: #f0ebe1;
+      --forest: #183028;
+      --forest-mid: #1e3c2e;
+      --forest-light: #2a5040;
+      --gold: #b5872b;
+      --gold-light: #d4a84b;
+      --gold-pale: rgba(181,135,43,0.14);
+      --ink: #1c1a16;
+      --muted: #7c7262;
+      --border: rgba(181,135,43,0.22);
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body: 'EB Garamond', Georgia, serif;
+      --mono: 'Space Mono', monospace;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font);
-      background: var(--black);
-      color: var(--white);
+      font-family: var(--body);
+      background: var(--cream);
+      color: var(--ink);
       overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
     }
 
     /* ── NAV ── */
@@ -35,127 +54,97 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 48px;
-      height: 64px;
-      background: rgba(10,10,10,0.75);
+      padding: 0 60px;
+      height: 72px;
+      background: rgba(248,244,238,0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--border);
       transition: background 0.3s;
     }
 
     .nav-logo {
-      font-size: 18px;
+      font-family: var(--display);
+      font-size: 22px;
       font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--white);
+      letter-spacing: 0.02em;
+      color: var(--forest);
       text-decoration: none;
     }
 
-    .nav-logo span { color: var(--accent); }
+    .nav-logo span {
+      color: var(--gold);
+      font-weight: 300;
+      font-style: italic;
+    }
 
     nav ul {
       display: flex;
-      gap: 36px;
+      gap: 40px;
       list-style: none;
+      align-items: center;
     }
 
     nav ul a {
-      font-size: 14px;
-      color: rgba(245,245,247,0.7);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
       text-decoration: none;
-      letter-spacing: 0.02em;
       transition: color 0.2s;
     }
 
-    nav ul a:hover { color: var(--white); }
+    nav ul a:hover { color: var(--forest); }
 
     .nav-cta {
-      background: var(--accent);
-      color: var(--black) !important;
-      font-weight: 600;
-      padding: 8px 20px;
-      border-radius: 100px;
-      transition: background 0.2s, transform 0.15s !important;
+      background: var(--forest) !important;
+      color: var(--cream) !important;
+      padding: 9px 24px !important;
+      border-radius: 2px !important;
     }
 
-    .nav-cta:hover { background: var(--accent-light) !important; transform: scale(1.03); }
+    .nav-cta:hover { background: var(--forest-light) !important; color: var(--cream) !important; }
 
     /* ── HERO ── */
     .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 55% 45%;
       align-items: center;
-      justify-content: center;
-      text-align: center;
       position: relative;
       overflow: hidden;
-      padding: 0 24px;
+      padding-top: 72px;
     }
 
     .hero-bg {
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,169,110,0.12) 0%, transparent 70%),
-        linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+      background: var(--cream);
     }
 
-    /* Piano keys decoration */
-    .piano-keys {
+    .hero-bg::after {
+      content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 2px;
-      opacity: 0.13;
+      top: 0; right: 0;
+      width: 48%;
+      height: 100%;
+      background: var(--cream-alt);
+      clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
     }
 
-    .key-w {
-      width: 48px;
-      height: 220px;
-      background: linear-gradient(180deg, #e8e8e8, #c8c8c8);
-      border-radius: 0 0 8px 8px;
-      border: 1px solid #555;
-      transition: transform 0.1s, background 0.1s;
-    }
-
-    .key-w.press {
-      transform: translateY(4px) scaleY(0.97);
-      background: linear-gradient(180deg, var(--accent-light), var(--accent));
-    }
-
-    .key-b {
-      width: 30px;
-      height: 140px;
-      background: linear-gradient(180deg, #333, #111);
-      margin: 0 -16px;
-      position: relative;
-      z-index: 2;
-      border-radius: 0 0 5px 5px;
-      border: 1px solid #666;
-      transition: transform 0.1s, background 0.1s;
-    }
-
-    .key-b.press {
-      transform: translateY(4px);
-      background: linear-gradient(180deg, var(--accent), #8a6030);
-    }
-
-    /* Floating music notes */
     .notes-bg {
       position: absolute;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
+      z-index: 2;
     }
 
     .note {
       position: absolute;
-      font-size: 28px;
-      color: var(--accent);
+      font-size: 26px;
+      color: var(--gold);
       opacity: 0;
       animation: floatNote linear infinite;
       user-select: none;
@@ -164,130 +153,207 @@
     @keyframes floatNote {
       0%   { opacity: 0; transform: translateY(0) rotate(-10deg) scale(0.8); }
       10%  { opacity: 0.18; }
-      80%  { opacity: 0.12; }
+      80%  { opacity: 0.1; }
       100% { opacity: 0; transform: translateY(-320px) rotate(20deg) scale(1.1); }
     }
 
-    .hero-eyebrow {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 24px;
+    .piano-keys {
+      position: absolute;
+      right: 48px;
+      bottom: 0;
+      top: 72px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 3px;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .key-w {
+      width: 38px;
+      height: 200px;
+      background: linear-gradient(180deg, #f0ece0, #ddd5c4);
+      border-radius: 0 0 6px 6px;
+      border: 1px solid #c8b898;
+      border-top: none;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-w.press {
+      transform: translateY(5px) scaleY(0.97);
+      background: linear-gradient(180deg, #f5e8c8, var(--gold));
+    }
+
+    .key-b {
+      width: 24px;
+      height: 126px;
+      background: linear-gradient(180deg, #2a2418, #121008);
+      margin: 0 -13px;
       position: relative;
+      z-index: 2;
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #3a3020;
+      transition: transform 0.1s, background 0.1s;
+    }
+
+    .key-b.press {
+      transform: translateY(4px);
+      background: linear-gradient(180deg, var(--gold), #7a5018);
+    }
+
+    .hero-content {
+      padding: 0 60px 0 80px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s 0.2s forwards;
+      transform: translateY(16px);
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
     }
 
     .hero h1 {
-      font-size: clamp(52px, 9vw, 96px);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      position: relative;
+      font-family: var(--display);
+      font-size: clamp(54px, 5.5vw, 96px);
+      font-weight: 600;
+      line-height: 1.04;
+      letter-spacing: -0.01em;
+      color: var(--forest);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(28px);
       animation: fadeUp 0.9s 0.35s forwards;
     }
 
     .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
     }
 
     .hero-sub {
-      margin-top: 28px;
-      font-size: clamp(17px, 2.5vw, 22px);
-      font-weight: 300;
-      color: rgba(245,245,247,0.65);
-      max-width: 560px;
-      line-height: 1.55;
-      position: relative;
+      margin-top: 32px;
+      font-family: var(--body);
+      font-size: clamp(16px, 1.6vw, 20px);
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.7;
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(20px);
       animation: fadeUp 0.9s 0.5s forwards;
     }
 
     .hero-actions {
-      margin-top: 44px;
+      margin-top: 48px;
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
-      justify-content: center;
-      position: relative;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(16px);
       animation: fadeUp 0.9s 0.65s forwards;
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: var(--black);
-      font-size: 16px;
-      font-weight: 600;
-      padding: 14px 32px;
-      border-radius: 100px;
+      background: var(--forest);
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 2px;
       text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 4px 24px rgba(200,169,110,0.25);
+      transition: background 0.2s, transform 0.15s;
     }
 
     .btn-primary:hover {
-      background: var(--accent-light);
-      transform: scale(1.03);
-      box-shadow: 0 8px 32px rgba(200,169,110,0.35);
+      background: var(--forest-light);
+      transform: translateY(-1px);
     }
 
     .btn-ghost {
-      color: var(--accent);
-      font-size: 16px;
-      font-weight: 500;
-      padding: 14px 32px;
-      border-radius: 100px;
+      color: var(--forest);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 15px 36px;
+      border-radius: 2px;
       text-decoration: none;
-      border: 1.5px solid rgba(200,169,110,0.4);
+      border: 1px solid rgba(24,48,40,0.28);
       transition: border-color 0.2s, background 0.2s, transform 0.15s;
     }
 
     .btn-ghost:hover {
-      border-color: var(--accent);
-      background: rgba(200,169,110,0.08);
-      transform: scale(1.03);
+      border-color: var(--forest);
+      background: rgba(24,48,40,0.05);
+      transform: translateY(-1px);
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 3;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 72px;
+    }
+
+    /* Decorative SVG score */
+    .score-ornament {
+      width: 320px;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
     }
 
     .scroll-hint {
       position: absolute;
       bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 80px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
       opacity: 0;
       animation: fadeUp 1s 1.2s forwards;
+      z-index: 3;
     }
 
     .scroll-hint span {
-      font-size: 11px;
-      letter-spacing: 0.12em;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--grey-text);
+      color: var(--muted);
     }
 
     .scroll-arrow {
-      width: 20px;
-      height: 20px;
-      border-right: 1.5px solid var(--grey-text);
-      border-bottom: 1.5px solid var(--grey-text);
+      width: 16px;
+      height: 16px;
+      border-right: 1px solid var(--muted);
+      border-bottom: 1px solid var(--muted);
       transform: rotate(45deg);
-      animation: bounce 1.6s infinite;
+      animation: bounce 1.8s infinite;
     }
 
     /* ── SECTIONS SHARED ── */
@@ -295,14 +361,11 @@
 
     .reveal {
       opacity: 0;
-      transform: translateY(48px);
+      transform: translateY(40px);
       transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
@@ -311,8 +374,8 @@
 
     /* ── STAFF DIVIDER ── */
     .staff-divider {
-      height: 80px;
-      background: var(--black);
+      height: 68px;
+      background: var(--forest);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -322,8 +385,8 @@
 
     .staff-lines {
       width: 100%;
-      max-width: 900px;
-      height: 60px;
+      max-width: 1000px;
+      height: 48px;
       position: relative;
     }
 
@@ -331,52 +394,98 @@
       position: absolute;
       left: 0; right: 0;
       height: 1px;
-      background: rgba(200,169,110,0.2);
+      background: rgba(248,244,238,0.13);
     }
 
-    .staff-line:nth-child(1) { top: 10px; }
-    .staff-line:nth-child(2) { top: 22px; }
-    .staff-line:nth-child(3) { top: 34px; }
-    .staff-line:nth-child(4) { top: 46px; }
-    .staff-line:nth-child(5) { top: 58px; }
+    .staff-line:nth-child(1) { top: 4px; }
+    .staff-line:nth-child(2) { top: 15px; }
+    .staff-line:nth-child(3) { top: 26px; }
+    .staff-line:nth-child(4) { top: 37px; }
+    .staff-line:nth-child(5) { top: 48px; }
 
     .treble-clef {
       position: absolute;
-      left: 40px;
-      top: -8px;
-      font-size: 72px;
+      left: 48px;
+      top: -16px;
+      font-size: 80px;
       line-height: 1;
-      color: rgba(200,169,110,0.25);
+      color: rgba(212,168,75,0.35);
       font-family: serif;
     }
 
     .staff-note {
       position: absolute;
-      width: 14px;
-      height: 10px;
+      width: 12px;
+      height: 9px;
       border-radius: 50%;
-      background: rgba(200,169,110,0.3);
+      background: rgba(212,168,75,0.3);
       transform: rotate(-15deg);
     }
 
-    /* ── PLAYABLE PIANO SECTION ── */
+    /* ── STATEMENT ── */
+    .statement {
+      padding: 160px 24px;
+      text-align: center;
+      background: var(--forest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .statement::before {
+      content: '𝄞';
+      position: absolute;
+      font-size: 520px;
+      color: rgba(255,255,255,0.018);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .statement p {
+      font-family: var(--display);
+      font-size: clamp(24px, 3.8vw, 52px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.32;
+      max-width: 900px;
+      margin: 0 auto;
+      letter-spacing: 0.005em;
+      color: rgba(248,244,238,0.88);
+      position: relative;
+    }
+
+    .statement p em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+
+    /* ── PLAYABLE PIANO ── */
     .play-piano {
       padding: 120px 48px;
-      background: var(--black);
+      background: var(--cream);
       text-align: center;
     }
 
-    .play-piano .section-sub { margin-top: 16px; margin-bottom: 64px; }
+    .play-piano .section-sub {
+      margin-top: 16px;
+      margin-bottom: 64px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
 
     .piano-wrap {
       display: inline-flex;
-      background: linear-gradient(180deg, #1a0e00, #0a0a0a);
-      border: 1px solid rgba(200,169,110,0.2);
-      border-radius: 16px;
-      padding: 32px 32px 0;
+      background: linear-gradient(180deg, var(--forest) 0%, #0f2018 100%);
+      border: 1px solid rgba(24,48,40,0.5);
+      border-radius: 4px;
+      padding: 44px 32px 0;
       gap: 0;
       position: relative;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.08);
+      box-shadow: 0 40px 100px rgba(24,48,40,0.18), 0 0 0 1px rgba(181,135,43,0.1);
       overflow: hidden;
     }
 
@@ -384,58 +493,70 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 32px;
-      background: linear-gradient(180deg, rgba(200,169,110,0.06), transparent);
+      height: 44px;
+      background: linear-gradient(180deg, rgba(212,168,75,0.06), transparent);
+    }
+
+    .piano-wrap::after {
+      content: 'MUSIC DEPOT';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      color: rgba(212,168,75,0.45);
+      white-space: nowrap;
     }
 
     .pk-w {
       width: 52px;
       height: 200px;
-      background: linear-gradient(180deg, #f8f6f0 0%, #e8e4dc 70%, #d8d4cc 100%);
-      border-radius: 0 0 8px 8px;
-      border: 1px solid #bbb;
+      background: linear-gradient(180deg, #f8f4ec 0%, #ece6da 70%, #ddd5c4 100%);
+      border-radius: 0 0 6px 6px;
+      border: 1px solid #bbb098;
       border-top: none;
       cursor: pointer;
       position: relative;
-      transition: background 0.08s, transform 0.08s;
-      box-shadow: inset 0 -4px 8px rgba(0,0,0,0.1), 2px 0 4px rgba(0,0,0,0.15);
+      transition: background 0.06s, transform 0.06s, box-shadow 0.06s;
+      box-shadow: inset 0 -4px 8px rgba(0,0,0,0.08), 2px 0 3px rgba(0,0,0,0.1);
       flex-shrink: 0;
       display: flex;
       align-items: flex-end;
       justify-content: center;
       padding-bottom: 12px;
-      font-size: 11px;
-      color: rgba(0,0,0,0.25);
-      font-weight: 500;
-      letter-spacing: 0.04em;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(0,0,0,0.18);
       user-select: none;
     }
 
     .pk-w:active, .pk-w.active {
-      background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%);
-      transform: translateY(3px) scaleY(0.98);
-      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
-      color: rgba(0,0,0,0.5);
+      background: linear-gradient(180deg, #f5e8c4 0%, var(--gold-light) 100%);
+      transform: translateY(4px) scaleY(0.98);
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1), 0 0 24px rgba(181,135,43,0.35);
+      color: rgba(0,0,0,0.35);
     }
 
     .pk-b {
       width: 34px;
       height: 124px;
-      background: linear-gradient(180deg, #2c2c2c 0%, #111 60%, #0a0a0a 100%);
-      border-radius: 0 0 6px 6px;
+      background: linear-gradient(180deg, #1e1810 0%, #0f0c08 60%, #090705 100%);
+      border-radius: 0 0 5px 5px;
       cursor: pointer;
       position: absolute;
       z-index: 2;
-      transition: background 0.08s, transform 0.08s;
-      box-shadow: 2px 4px 8px rgba(0,0,0,0.6), inset 0 -2px 4px rgba(255,255,255,0.05);
-      top: 32px;
+      transition: background 0.06s, transform 0.06s, box-shadow 0.06s;
+      box-shadow: 2px 4px 8px rgba(0,0,0,0.7), inset 0 -1px 3px rgba(255,255,255,0.04);
+      top: 44px;
       user-select: none;
     }
 
     .pk-b:active, .pk-b.active {
-      background: linear-gradient(180deg, var(--accent) 0%, #7a5020 100%);
-      transform: translateY(2px);
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg, var(--gold) 0%, #7a5018 100%);
+      transform: translateY(3px);
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.7), 0 0 18px rgba(181,135,43,0.45);
     }
 
     .piano-container {
@@ -444,126 +565,133 @@
     }
 
     .key-hint {
-      margin-top: 24px;
-      font-size: 13px;
-      color: var(--grey-text);
-      letter-spacing: 0.06em;
+      margin-top: 28px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
       padding-bottom: 32px;
       display: block;
     }
 
-    /* ── STATEMENT SECTION ── */
-    .statement {
-      padding: 160px 24px;
-      text-align: center;
-      background: linear-gradient(180deg, var(--black) 0%, #0f0f10 100%);
+    /* ── EYEBROW & SECTION LABELS ── */
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .statement p {
-      font-size: clamp(28px, 4.5vw, 52px);
+    .eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(36px, 4.2vw, 60px);
       font-weight: 600;
-      line-height: 1.25;
-      max-width: 860px;
-      margin: 0 auto;
-      letter-spacing: -0.02em;
-      color: rgba(245,245,247,0.9);
+      letter-spacing: -0.01em;
+      line-height: 1.04;
+      color: var(--forest);
     }
 
-    .statement p em {
-      font-style: normal;
-      color: var(--accent);
+    .section-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+    }
+
+    .section-sub {
+      margin-top: 24px;
+      font-family: var(--body);
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.65;
     }
 
     /* ── PILLARS ── */
     .pillars {
-      padding: 120px 48px;
-      background: var(--grey);
+      padding: 140px 80px;
+      background: var(--cream-alt);
     }
 
     .pillars-header {
-      text-align: center;
       margin-bottom: 80px;
-    }
-
-    .eyebrow {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.1;
-    }
-
-    .section-sub {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--grey-text);
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
+      max-width: 560px;
     }
 
     .pillars-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      max-width: 1100px;
-      margin: 0 auto;
+      gap: 2px;
+      max-width: 1200px;
     }
 
     .pillar-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 40px 36px;
-      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      background: var(--cream);
+      border-top: 3px solid var(--border);
+      padding: 48px 40px 52px;
+      transition: border-color 0.3s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pillar-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -24px;
+      right: 20px;
+      font-family: var(--display);
+      font-size: 130px;
+      font-weight: 700;
+      color: rgba(181,135,43,0.055);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
     }
 
     .pillar-card:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(200,169,110,0.3);
-      transform: translateY(-4px);
+      border-color: var(--gold);
+      transform: translateY(-3px);
     }
 
     .pillar-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(200,169,110,0.2), rgba(200,169,110,0.05));
-      border: 1px solid rgba(200,169,110,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
       margin-bottom: 24px;
+      display: block;
     }
 
     .pillar-card h3 {
-      font-size: 20px;
+      font-family: var(--display);
+      font-size: 24px;
       font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
+      color: var(--forest);
+      margin-bottom: 16px;
+      position: relative;
     }
 
     .pillar-card p {
-      font-size: 15px;
-      color: var(--grey-text);
-      line-height: 1.65;
+      font-family: var(--body);
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.72;
+      position: relative;
     }
 
     /* ── EXPERIENCE SPLIT ── */
     .experience {
-      padding: 160px 48px;
-      background: var(--black);
+      padding: 160px 80px;
+      background: var(--forest);
     }
 
     .experience-inner {
@@ -571,28 +699,39 @@
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      gap: 96px;
       align-items: center;
     }
 
-    .experience-text .eyebrow { margin-bottom: 16px; }
+    .experience-text .eyebrow { color: var(--gold-light); }
+    .experience-text .eyebrow::before { background: var(--gold-light); }
 
     .experience-text h2 {
-      font-size: clamp(36px, 4.5vw, 52px);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.1;
-      margin-bottom: 24px;
+      font-family: var(--display);
+      font-size: clamp(34px, 3.8vw, 52px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.08;
+      margin-bottom: 28px;
+      color: var(--cream);
     }
 
     .experience-text p {
+      font-family: var(--body);
       font-size: 17px;
-      color: var(--grey-text);
-      line-height: 1.7;
-      margin-bottom: 16px;
+      color: rgba(248,244,238,0.62);
+      line-height: 1.75;
+      margin-bottom: 18px;
     }
 
-    .experience-text .btn-primary { display: inline-block; margin-top: 16px; }
+    .experience-text .btn-primary {
+      display: inline-block;
+      margin-top: 12px;
+      background: var(--gold);
+      color: var(--forest);
+    }
+
+    .experience-text .btn-primary:hover { background: var(--gold-light); }
 
     .experience-visual {
       position: relative;
@@ -601,22 +740,21 @@
 
     .visual-card {
       position: absolute;
-      border-radius: 24px;
+      border-radius: 3px;
       overflow: hidden;
     }
 
     .visual-main {
       width: 100%;
       height: 380px;
-      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      background: linear-gradient(135deg, #0f2018, #1a3828, #0d1e14);
       display: flex;
       align-items: center;
       justify-content: center;
       top: 0; left: 0;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(181,135,43,0.12);
     }
 
-    /* Animated piano graphic */
     .piano-graphic {
       display: flex;
       gap: 3px;
@@ -626,20 +764,23 @@
     .pg-w {
       width: 36px;
       height: 160px;
-      background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
-      border-radius: 0 0 6px 6px;
-      border: 1px solid #ccc;
+      background: linear-gradient(180deg, #f0ece0, #ddd5c4);
+      border-radius: 0 0 5px 5px;
+      border: 1px solid #bbb098;
       position: relative;
       cursor: pointer;
-      transition: background 0.1s;
+      transition: background 0.1s, box-shadow 0.1s;
     }
 
-    .pg-w:hover { background: linear-gradient(180deg, var(--accent-light), var(--accent)); }
+    .pg-w:hover {
+      background: linear-gradient(180deg, #f5e8c8, var(--gold-light));
+      box-shadow: 0 0 20px rgba(181,135,43,0.3);
+    }
 
     .pg-b {
       width: 24px;
       height: 100px;
-      background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+      background: linear-gradient(180deg, #1e1810, #0f0c08);
       border-radius: 0 0 4px 4px;
       margin: 0 -13px;
       position: relative;
@@ -647,48 +788,55 @@
       transition: background 0.1s;
     }
 
-    .pg-b:hover { background: linear-gradient(180deg, var(--accent), #a07830); }
+    .pg-b:hover { background: linear-gradient(180deg, var(--gold), #7a5018); }
 
     .stat-badge {
       position: absolute;
       bottom: 0;
-      right: -24px;
-      background: var(--grey);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 20px 24px;
-      min-width: 160px;
+      right: -28px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 24px 28px;
+      min-width: 168px;
     }
 
     .stat-badge .num {
-      font-size: 36px;
+      font-family: var(--display);
+      font-size: 48px;
       font-weight: 700;
-      color: var(--accent);
+      color: var(--gold);
       letter-spacing: -0.02em;
+      line-height: 1;
     }
 
     .stat-badge .label {
+      font-family: var(--body);
       font-size: 13px;
-      color: var(--grey-text);
-      margin-top: 4px;
-      line-height: 1.4;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.45;
     }
 
     /* ── JOURNEY ── */
     .journey {
-      padding: 140px 48px;
-      background: var(--grey);
+      padding: 160px 80px;
+      background: var(--cream);
+    }
+
+    .journey-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: stretch;
     }
 
     .journey-header {
-      text-align: center;
-      max-width: 640px;
-      margin: 0 auto 96px;
+      max-width: 480px;
+      margin-bottom: 80px;
     }
 
     .journey-steps {
-      max-width: 800px;
-      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -696,162 +844,437 @@
 
     .step {
       display: grid;
-      grid-template-columns: 64px 1fr;
+      grid-template-columns: 80px 1fr;
       gap: 32px;
       padding-bottom: 56px;
       position: relative;
+      cursor: default;
     }
 
-    .step:not(:last-child)::before {
+    .step:not(:last-child)::after {
       content: '';
       position: absolute;
-      left: 31px;
-      top: 56px;
+      left: 39px;
+      top: 64px;
       bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, rgba(200,169,110,0.4), rgba(200,169,110,0.05));
+      width: 1px;
+      background: linear-gradient(180deg, var(--border), transparent);
     }
 
     .step-num {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+      font-family: var(--display);
+      font-size: 60px;
       font-weight: 700;
-      color: var(--accent);
-      flex-shrink: 0;
-      background: var(--grey);
-      position: relative;
-      z-index: 1;
+      color: rgba(181,135,43,0.14);
+      line-height: 1;
+      text-align: center;
+      padding-top: 6px;
+      transition: color 0.3s;
     }
 
+    .step:hover .step-num { color: var(--gold); }
+
+    .step-body {
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .step:hover .step-body { border-top-color: var(--gold); }
+
     .step-body h3 {
-      font-size: 22px;
+      font-family: var(--display);
+      font-size: 24px;
       font-weight: 600;
-      letter-spacing: -0.01em;
-      padding-top: 16px;
-      margin-bottom: 12px;
+      color: var(--forest);
+      margin-bottom: 10px;
+      margin-top: 14px;
     }
 
     .step-body p {
+      font-family: var(--body);
       font-size: 16px;
-      color: var(--grey-text);
-      line-height: 1.7;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    /* Right-side sticky detail panel */
+    .journey-panel {
+      position: relative;
+      border: 1px dashed var(--border);
+      border-radius: 3px;
+    }
+
+    .journey-panel-sticky {
+      position: sticky;
+      top: 104px;
+    }
+
+    .panel-default {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      padding: 40px 44px;
+      opacity: 1;
+      transition: opacity 0.25s;
+    }
+
+    .panel-default.hidden {
+      opacity: 0;
+      pointer-events: none;
+      height: 0;
+      min-height: 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .panel-default-icon {
+      font-family: serif;
+      font-size: 72px;
+      color: rgba(181,135,43,0.12);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .panel-default p {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(181,135,43,0.4);
+    }
+
+    .panel-slide {
+      display: none;
+      padding: 40px 44px;
+      background: var(--cream-alt);
+      border-top: 3px solid var(--gold);
+      border-radius: 2px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .panel-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .panel-slide-num {
+      font-family: var(--display);
+      font-size: 96px;
+      font-weight: 700;
+      color: rgba(181,135,43,0.09);
+      line-height: 1;
+      margin-bottom: -8px;
+    }
+
+    .panel-slide-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-slide-eyebrow::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .panel-slide h4 {
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 28px;
+      line-height: 1.1;
+    }
+
+    .panel-slide ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel-slide ul li {
+      font-family: var(--body);
+      font-size: 16px;
+      color: var(--ink);
+      line-height: 1.55;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .panel-slide ul li::before {
+      content: '—';
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 3px;
     }
 
     /* ── TESTIMONIALS ── */
     .testimonials {
-      padding: 140px 48px;
-      background: var(--black);
+      padding: 160px 80px;
+      background: var(--cream-alt);
     }
 
     .testimonials-header {
-      text-align: center;
-      margin-bottom: 72px;
+      margin-bottom: 80px;
+      max-width: 480px;
     }
 
     .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      max-width: 1060px;
-      margin: 0 auto;
+      gap: 2px;
+      max-width: 1100px;
     }
 
     .t-card {
-      background: var(--grey);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 20px;
-      padding: 36px;
-      transition: transform 0.3s, border-color 0.3s;
+      background: var(--cream);
+      border-top: 3px solid var(--border);
+      padding: 48px 40px;
+      transition: border-color 0.3s, transform 0.25s;
+      position: relative;
     }
 
     .t-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(200,169,110,0.25);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .t-quote-mark {
+      font-family: var(--display);
+      font-size: 110px;
+      line-height: 0.6;
+      color: rgba(181,135,43,0.14);
+      margin-bottom: 16px;
+      display: block;
     }
 
     .t-stars {
-      color: var(--accent);
-      font-size: 18px;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
     }
 
     .t-card blockquote {
-      font-size: 16px;
-      color: rgba(245,245,247,0.85);
-      line-height: 1.7;
+      font-family: var(--display);
+      font-size: 18px;
       font-style: italic;
-      margin-bottom: 28px;
+      color: var(--forest);
+      line-height: 1.68;
+      margin-bottom: 32px;
+      font-weight: 400;
     }
 
     .t-author {
       display: flex;
       align-items: center;
       gap: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
     }
 
     .t-avatar {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: var(--display);
       font-size: 18px;
       font-weight: 600;
       flex-shrink: 0;
+      color: var(--cream);
     }
 
-    .t-avatar.a { background: linear-gradient(135deg, #5e5ce6, #9b59b6); }
-    .t-avatar.b { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-    .t-avatar.c { background: linear-gradient(135deg, #26de81, #20bf6b); }
+    .t-avatar.a { background: var(--forest); }
+    .t-avatar.b { background: #6b3828; }
+    .t-avatar.c { background: #1a4030; }
 
-    .t-name { font-size: 15px; font-weight: 600; }
-    .t-role { font-size: 13px; color: var(--grey-text); margin-top: 2px; }
+    .t-name {
+      font-family: var(--body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--forest);
+    }
+
+    .t-role {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      padding: 140px 80px;
+      background: var(--forest);
+    }
+
+    .pricing-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .pricing-header .eyebrow { color: var(--gold-light); }
+    .pricing-header .eyebrow::before { background: var(--gold-light); }
+
+    .pricing-header h2 {
+      font-family: var(--display);
+      font-size: clamp(34px, 4vw, 54px);
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .pricing-header p {
+      font-family: var(--body);
+      font-size: 17px;
+      color: rgba(248,244,238,0.58);
+      line-height: 1.7;
+    }
+
+    .pricing-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .price-card {
+      background: rgba(248,244,238,0.05);
+      border: 1px solid rgba(181,135,43,0.18);
+      border-left: 3px solid var(--gold);
+      padding: 32px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+
+    .price-card:hover {
+      background: rgba(248,244,238,0.09);
+      border-color: var(--gold-light);
+      transform: translateX(4px);
+    }
+
+    .price-card-info h3 {
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .price-card-info p {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248,244,238,0.4);
+    }
+
+    .price-amount {
+      font-family: var(--display);
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .price-amount sup {
+      font-size: 22px;
+      vertical-align: top;
+      margin-top: 6px;
+      display: inline-block;
+      font-weight: 400;
+    }
+
+    .pricing-note {
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(248,244,238,0.3);
+    }
 
     /* ── CTA ── */
     .cta-section {
-      padding: 160px 24px;
+      padding: 180px 24px;
       text-align: center;
-      background: linear-gradient(180deg, var(--black) 0%, #0d0d0e 100%);
+      background: var(--forest);
       position: relative;
       overflow: hidden;
     }
 
-    .cta-glow {
+    .cta-section::before {
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
+      width: 700px;
+      height: 700px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(181,135,43,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .cta-section h2 {
-      font-size: clamp(36px, 6vw, 68px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      max-width: 720px;
+      font-family: var(--display);
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.06;
+      max-width: 760px;
       margin: 0 auto 24px;
+      color: var(--cream);
       position: relative;
     }
 
+    .cta-section h2 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold-light);
+    }
+
     .cta-section p {
-      font-size: 19px;
-      color: var(--grey-text);
+      font-family: var(--body);
+      font-size: 20px;
+      color: rgba(248,244,238,0.58);
       max-width: 480px;
-      margin: 0 auto 48px;
-      line-height: 1.6;
+      margin: 0 auto 56px;
+      line-height: 1.62;
       position: relative;
     }
 
@@ -863,31 +1286,91 @@
       position: relative;
     }
 
-    .btn-large {
-      font-size: 18px;
-      padding: 18px 40px;
+    .btn-large { font-size: 12px; padding: 18px 48px; }
+
+    .btn-gold {
+      background: var(--gold) !important;
+      color: var(--forest) !important;
+    }
+
+    .btn-gold:hover { background: var(--gold-light) !important; }
+
+    .btn-ghost-light {
+      color: var(--cream);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 17px 48px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: 1px solid rgba(248,244,238,0.22);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .btn-ghost-light:hover {
+      border-color: rgba(248,244,238,0.5);
+      background: rgba(248,244,238,0.05);
+      transform: translateY(-1px);
     }
 
     /* ── FOOTER ── */
+    .footer-keys {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      overflow: hidden;
+      opacity: 0.1;
+      background: #0f2018;
+    }
+
+    .fk-w {
+      width: 32px;
+      height: 50px;
+      background: linear-gradient(180deg, #f0ece0, #d8d0c0);
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #a09878;
+      border-top: none;
+      flex-shrink: 0;
+    }
+
+    .fk-b {
+      width: 20px;
+      height: 34px;
+      background: #1a1510;
+      border-radius: 0 0 3px 3px;
+      margin: 0 -11px;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
     footer {
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 48px;
+      border-top: 1px solid rgba(181,135,43,0.12);
+      padding: 56px 80px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: gap;
+      flex-wrap: wrap;
       gap: 24px;
-      background: var(--black);
+      background: #0f2018;
     }
 
     .footer-logo {
-      font-size: 16px;
+      font-family: var(--display);
+      font-size: 20px;
       font-weight: 600;
-      color: var(--white);
+      color: var(--cream);
       text-decoration: none;
     }
 
-    .footer-logo span { color: var(--accent); }
+    .footer-logo span {
+      color: var(--gold);
+      font-weight: 300;
+      font-style: italic;
+    }
 
     .footer-links {
       display: flex;
@@ -896,50 +1379,22 @@
     }
 
     .footer-links a {
-      font-size: 13px;
-      color: var(--grey-text);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248,244,238,0.38);
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover { color: var(--white); }
+    .footer-links a:hover { color: rgba(248,244,238,0.75); }
 
     .footer-copy {
-      font-size: 13px;
-      color: var(--grey-text);
-    }
-
-    .footer-keys {
-      width: 100%;
-      height: 56px;
-      display: flex;
-      justify-content: center;
-      gap: 2px;
-      overflow: hidden;
-      opacity: 0.12;
-      padding-bottom: 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .fk-w {
-      width: 32px;
-      height: 56px;
-      background: linear-gradient(180deg, #ddd, #bbb);
-      border-radius: 0 0 4px 4px;
-      border: 1px solid #555;
-      border-top: none;
-      flex-shrink: 0;
-    }
-
-    .fk-b {
-      width: 20px;
-      height: 36px;
-      background: #222;
-      border-radius: 0 0 3px 3px;
-      margin: 0 -11px;
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: rgba(248,244,238,0.28);
     }
 
     /* ── ANIMATIONS ── */
@@ -953,17 +1408,20 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 120px 40px 80px; }
+      .hero-bg::after { display: none; }
+      .hero-visual { display: none; }
+      .hero-content { padding: 0; }
+      .piano-keys { display: none; }
       nav { padding: 0 24px; }
       nav ul { display: none; }
-      .pillars { padding: 80px 24px; }
-      .experience { padding: 80px 24px; }
-      .experience-inner { grid-template-columns: 1fr; gap: 48px; }
-      .experience-visual { height: 300px; }
+      .pillars, .journey, .testimonials { padding: 80px 32px; }
+      .experience { padding: 80px 32px; }
+      .experience-inner { grid-template-columns: 1fr; gap: 60px; }
+      .experience-visual { height: 320px; }
       .stat-badge { right: 0; }
-      .journey { padding: 80px 24px; }
-      .testimonials { padding: 80px 24px; }
-      footer { flex-direction: column; text-align: center; padding: 40px 24px; }
+      footer { padding: 48px 32px; flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -975,7 +1433,7 @@
   <ul>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#journey">Journey</a></li>
-    <li><a href="#testimonials">Students</a></li>
+    <li><a href="#pricing">Pricing</a></li>
     <li><a href="enroll.html" class="nav-cta">Enrol Now</a></li>
   </ul>
 </nav>
@@ -983,37 +1441,77 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-
-  <!-- Floating music notes -->
   <div class="notes-bg" id="notesContainer"></div>
+  <div class="piano-keys" id="heroPianoKeys"></div>
 
-  <!-- Piano keys decoration -->
-  <div class="piano-keys" id="heroPianoKeys">
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div><div class="key-b"></div>
-    <div class="key-w"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Music Depot Piano Studio</p>
+    <h1>Play like you've<br>always <em>imagined.</em></h1>
+    <p class="hero-sub">
+      A boutique piano teaching experience built around you — your pace, your goals, your music.
+    </p>
+    <div class="hero-actions">
+      <a href="enroll.html" class="btn-primary">Begin Your Journey</a>
+      <a href="enroll.html" class="btn-ghost">Book a Free Lesson</a>
+    </div>
   </div>
 
-  <p class="hero-eyebrow">Music Depot Piano Studio</p>
-  <h1>Play like you've<br>always <em>imagined.</em></h1>
-  <p class="hero-sub">
-    A boutique piano teaching experience built around you — your pace, your goals, your music.
-  </p>
-  <div class="hero-actions">
-    <a href="enroll.html" class="btn-primary">Begin Your Journey</a>
-    <a href="#experience" class="btn-ghost">See the Experience</a>
+  <!-- Decorative right side -->
+  <div class="hero-visual">
+    <svg class="score-ornament" viewBox="0 0 340 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Staff lines -->
+      <line x1="40" y1="90"  x2="310" y2="90"  stroke="#183028" stroke-opacity="0.12" stroke-width="1.5"/>
+      <line x1="40" y1="108" x2="310" y2="108" stroke="#183028" stroke-opacity="0.12" stroke-width="1.5"/>
+      <line x1="40" y1="126" x2="310" y2="126" stroke="#183028" stroke-opacity="0.12" stroke-width="1.5"/>
+      <line x1="40" y1="144" x2="310" y2="144" stroke="#183028" stroke-opacity="0.12" stroke-width="1.5"/>
+      <line x1="40" y1="162" x2="310" y2="162" stroke="#183028" stroke-opacity="0.12" stroke-width="1.5"/>
+      <!-- Treble clef -->
+      <text x="40" y="178" font-family="serif" font-size="104" fill="#183028" fill-opacity="0.1">𝄞</text>
+      <!-- Notes -->
+      <ellipse cx="130" cy="108" rx="10" ry="7" transform="rotate(-12 130 108)" fill="#b5872b" fill-opacity="0.55"/>
+      <line x1="140" y1="108" x2="140" y2="70" stroke="#b5872b" stroke-opacity="0.38" stroke-width="1.5"/>
+      <ellipse cx="178" cy="126" rx="10" ry="7" transform="rotate(-12 178 126)" fill="#183028" fill-opacity="0.3"/>
+      <line x1="188" y1="126" x2="188" y2="88" stroke="#183028" stroke-opacity="0.22" stroke-width="1.5"/>
+      <ellipse cx="226" cy="99" rx="10" ry="7" transform="rotate(-12 226 99)" fill="#b5872b" fill-opacity="0.45"/>
+      <line x1="236" y1="99" x2="236" y2="61" stroke="#b5872b" stroke-opacity="0.32" stroke-width="1.5"/>
+      <ellipse cx="274" cy="144" rx="10" ry="7" transform="rotate(-12 274 144)" fill="#183028" fill-opacity="0.28"/>
+      <line x1="284" y1="144" x2="284" y2="106" stroke="#183028" stroke-opacity="0.2" stroke-width="1.5"/>
+      <!-- Second staff -->
+      <line x1="40" y1="230" x2="310" y2="230" stroke="#183028" stroke-opacity="0.07" stroke-width="1"/>
+      <line x1="40" y1="244" x2="310" y2="244" stroke="#183028" stroke-opacity="0.07" stroke-width="1"/>
+      <line x1="40" y1="258" x2="310" y2="258" stroke="#183028" stroke-opacity="0.07" stroke-width="1"/>
+      <line x1="40" y1="272" x2="310" y2="272" stroke="#183028" stroke-opacity="0.07" stroke-width="1"/>
+      <line x1="40" y1="286" x2="310" y2="286" stroke="#183028" stroke-opacity="0.07" stroke-width="1"/>
+      <!-- Piano keys at bottom -->
+      <g transform="translate(48, 320)">
+        <rect x="0"   y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="33"  y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="66"  y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="99"  y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="132" y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="165" y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <rect x="198" y="0" width="30" height="110" rx="2" fill="#f0ece0" stroke="#c0b898" stroke-width="1"/>
+        <!-- highlighted key -->
+        <rect x="66"  y="0" width="30" height="110" rx="2" fill="url(#gk)" stroke="#b5872b" stroke-width="1"/>
+        <!-- black keys -->
+        <rect x="22"  y="0" width="20" height="70" rx="2" fill="#1e1810"/>
+        <rect x="55"  y="0" width="20" height="70" rx="2" fill="#1e1810"/>
+        <rect x="120" y="0" width="20" height="70" rx="2" fill="#1e1810"/>
+        <rect x="153" y="0" width="20" height="70" rx="2" fill="#1e1810"/>
+        <rect x="186" y="0" width="20" height="70" rx="2" fill="#1e1810"/>
+      </g>
+      <defs>
+        <linearGradient id="gk" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f5e8c4"/>
+          <stop offset="100%" stop-color="#d4a84b"/>
+        </linearGradient>
+      </defs>
+    </svg>
   </div>
 
   <div class="scroll-hint">
-    <span>Scroll</span>
     <div class="scroll-arrow"></div>
+    <span>Scroll</span>
   </div>
 </section>
 
@@ -1026,14 +1524,14 @@
     <div class="staff-line"></div>
     <div class="staff-line"></div>
     <div class="treble-clef">𝄞</div>
-    <div class="staff-note" style="left:120px;top:4px;"></div>
-    <div class="staff-note" style="left:200px;top:16px;"></div>
-    <div class="staff-note" style="left:280px;top:28px;"></div>
-    <div class="staff-note" style="left:360px;top:10px;"></div>
-    <div class="staff-note" style="left:440px;top:22px;"></div>
-    <div class="staff-note" style="left:520px;top:4px;"></div>
-    <div class="staff-note" style="left:600px;top:34px;"></div>
-    <div class="staff-note" style="left:680px;top:16px;"></div>
+    <div class="staff-note" style="left:120px;top:0px;"></div>
+    <div class="staff-note" style="left:200px;top:11px;"></div>
+    <div class="staff-note" style="left:280px;top:22px;"></div>
+    <div class="staff-note" style="left:360px;top:5px;"></div>
+    <div class="staff-note" style="left:440px;top:18px;"></div>
+    <div class="staff-note" style="left:520px;top:0px;"></div>
+    <div class="staff-note" style="left:600px;top:30px;"></div>
+    <div class="staff-note" style="left:680px;top:11px;"></div>
   </div>
 </div>
 
@@ -1048,11 +1546,11 @@
 
 <!-- PLAYABLE PIANO -->
 <section class="play-piano">
-  <p class="eyebrow reveal">Try it yourself</p>
-  <h2 class="section-title reveal reveal-delay-1">Every journey starts<br>with a single key</h2>
+  <p class="eyebrow reveal" style="justify-content:center;">Try it yourself</p>
+  <h2 class="section-title reveal reveal-delay-1">Every journey starts<br>with a <em>single key</em></h2>
   <p class="section-sub reveal reveal-delay-2">Click the keys below — or use your keyboard (A–K for white, W E T Y U for black).</p>
 
-  <div class="reveal reveal-delay-3">
+  <div class="reveal reveal-delay-3" style="margin-top:56px;">
     <div class="piano-wrap">
       <div class="piano-container" id="pianoContainer"></div>
     </div>
@@ -1064,28 +1562,28 @@
 <section class="pillars" id="experience">
   <div class="pillars-header">
     <p class="eyebrow reveal">What sets us apart</p>
-    <h2 class="section-title reveal reveal-delay-1">A studio built<br>around the student</h2>
+    <h2 class="section-title reveal reveal-delay-1">A studio built<br>around the <em>student</em></h2>
     <p class="section-sub reveal reveal-delay-2">Every element of Music Depot is designed to accelerate your progress while keeping the joy of music alive.</p>
   </div>
 
   <div class="pillars-grid">
-    <div class="pillar-card reveal">
-      <div class="pillar-icon">🎯</div>
+    <div class="pillar-card reveal" data-num="01">
+      <span class="pillar-icon">🎯</span>
       <h3>Personalised Curriculum</h3>
       <p>No two students follow the same path. Your lessons are designed around your musical taste, learning pace, and long-term goals.</p>
     </div>
-    <div class="pillar-card reveal reveal-delay-1">
-      <div class="pillar-icon">🎶</div>
+    <div class="pillar-card reveal reveal-delay-1" data-num="02">
+      <span class="pillar-icon">🎶</span>
       <h3>Genre-Fluid Teaching</h3>
       <p>Classical foundations meet contemporary styles. Learn the music you actually love — from Bach to Billy Joel and beyond.</p>
     </div>
-    <div class="pillar-card reveal reveal-delay-2">
-      <div class="pillar-icon">🧠</div>
+    <div class="pillar-card reveal reveal-delay-2" data-num="03">
+      <span class="pillar-icon">🧠</span>
       <h3>Music Theory, Simplified</h3>
       <p>Theory without the textbook dread. We weave it naturally into playing so you understand music, not just notes on a page.</p>
     </div>
-    <div class="pillar-card reveal reveal-delay-3">
-      <div class="pillar-icon">🏆</div>
+    <div class="pillar-card reveal reveal-delay-3" data-num="04">
+      <span class="pillar-icon">🏆</span>
       <h3>Performance Ready</h3>
       <p>Regular recitals and milestones build confidence and performance skills — so you're always ready to share your music.</p>
     </div>
@@ -1134,101 +1632,151 @@
 
 <!-- JOURNEY -->
 <section class="journey" id="journey">
-  <div class="journey-header">
-    <p class="eyebrow reveal">Your Path</p>
-    <h2 class="section-title reveal reveal-delay-1">From first note<br>to full song</h2>
-    <p class="section-sub reveal reveal-delay-2">A clear, rewarding progression designed for lasting results.</p>
-  </div>
+  <div class="journey-inner">
 
-  <div class="journey-steps">
-    <div class="step reveal">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <h3>Discovery Session</h3>
-        <p>A relaxed first lesson where we explore your musical background, your goals, and what kind of pianist you want to become. No pressure — just music.</p>
+    <!-- Left: steps list -->
+    <div class="journey-left">
+      <div class="journey-header">
+        <p class="eyebrow reveal">Your Path</p>
+        <h2 class="section-title reveal reveal-delay-1">From first note<br>to <em>full song</em></h2>
+        <p class="section-sub reveal reveal-delay-2">A clear, rewarding progression designed for lasting results.</p>
+      </div>
+
+      <div class="journey-steps">
+        <div class="step reveal" data-step="1">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Discovery Session</h3>
+            <p>A relaxed first lesson where we explore your musical background, your goals, and what kind of pianist you want to become. No pressure — just music.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-1" data-step="2">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Foundations</h3>
+            <p>We build strong technique, hand coordination, and reading skills through music you actually enjoy playing — not just exercises.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-2" data-step="3">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Repertoire & Expression</h3>
+            <p>With solid foundations in place, we dive into full pieces — expanding your repertoire and developing your unique musical voice.</p>
+          </div>
+        </div>
+        <div class="step reveal reveal-delay-3" data-step="4">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Performance & Mastery</h3>
+            <p>Prepare for exams, recitals, or simply the joy of playing beautifully for an audience. This is where all the work pays off.</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="step reveal reveal-delay-1">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <h3>Foundations</h3>
-        <p>We build strong technique, hand coordination, and reading skills through music you actually enjoy playing — not just exercises.</p>
+    <!-- Right: sticky detail panel -->
+    <div class="journey-panel reveal reveal-delay-2">
+      <div class="journey-panel-sticky">
+      <div class="panel-default" id="panelDefault">
+        <div class="panel-default-icon">𝄞</div>
+        <p>Hover a step to explore</p>
       </div>
+
+      <div class="panel-slide" data-panel="1">
+        <div class="panel-slide-num">01</div>
+        <p class="panel-slide-eyebrow">Step One</p>
+        <h4>Discovery Session</h4>
+        <ul>
+          <li>60-minute relaxed conversation and play session</li>
+          <li>Explore your musical history and inspirations</li>
+          <li>Identify your goals — classical exams, favourite songs, or pure enjoyment</li>
+          <li>We design your personalised lesson plan before you leave</li>
+        </ul>
+      </div>
+
+      <div class="panel-slide" data-panel="2">
+        <div class="panel-slide-num">02</div>
+        <p class="panel-slide-eyebrow">Step Two</p>
+        <h4>Foundations</h4>
+        <ul>
+          <li>Posture, hand position, and injury-free technique from day one</li>
+          <li>Sight-reading introduced gradually at your pace</li>
+          <li>Basic chord theory woven into real songs you know</li>
+          <li>Both hands working together within the first few lessons</li>
+        </ul>
+      </div>
+
+      <div class="panel-slide" data-panel="3">
+        <div class="panel-slide-num">03</div>
+        <p class="panel-slide-eyebrow">Step Three</p>
+        <h4>Repertoire & Expression</h4>
+        <ul>
+          <li>Build a personal repertoire across genres you love</li>
+          <li>Dynamics, phrasing, and musical storytelling</li>
+          <li>Improvisation and composition introduced at this stage</li>
+          <li>Regular recordings to hear your own progress</li>
+        </ul>
+      </div>
+
+      <div class="panel-slide" data-panel="4">
+        <div class="panel-slide-num">04</div>
+        <p class="panel-slide-eyebrow">Step Four</p>
+        <h4>Performance & Mastery</h4>
+        <ul>
+          <li>AMEB, ABRSM, and Trinity exam preparation available</li>
+          <li>Bi-annual studio recitals in a supportive environment</li>
+          <li>Stage presence and managing performance nerves</li>
+          <li>Ongoing lessons to keep growing — there's always a next level</li>
+        </ul>
+      </div>
+      </div><!-- end journey-panel-sticky -->
     </div>
 
-    <div class="step reveal reveal-delay-2">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <h3>Repertoire & Expression</h3>
-        <p>With solid foundations in place, we dive into full pieces — expanding your repertoire and developing your unique musical voice.</p>
-      </div>
-    </div>
-
-    <div class="step reveal reveal-delay-3">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <h3>Performance & Mastery</h3>
-        <p>Prepare for exams, recitals, or simply the joy of playing beautifully for an audience. This is where all the work pays off.</p>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="testimonials" id="testimonials">
-  <div class="testimonials-header">
-    <p class="eyebrow reveal">Student Stories</p>
-    <h2 class="section-title reveal reveal-delay-1">Hear it from them</h2>
-  </div>
-
-  <div class="testimonials-grid">
-    <div class="t-card reveal">
-      <div class="t-stars">★★★★★</div>
-      <blockquote>"I tried three different teachers before Music Depot. This is the only place where I actually look forward to every single lesson. I've learned more in 4 months here than in 2 years elsewhere."</blockquote>
-      <div class="t-author">
-        <div class="t-avatar a">S</div>
-        <div>
-          <div class="t-name">Sarah K.</div>
-          <div class="t-role">Adult beginner, 4 months in</div>
-        </div>
-      </div>
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header reveal">
+      <p class="eyebrow">Lesson Rates</p>
+      <h2>Simple,<br>transparent <em>pricing</em></h2>
+      <p>No joining fees. No lock-in contracts. Just great lessons at a fair price — with a free first lesson so you can try before you commit.</p>
     </div>
-
-    <div class="t-card reveal reveal-delay-1">
-      <div class="t-stars">★★★★★</div>
-      <blockquote>"My 8-year-old was nervous to start. Now she practises without being asked and performed at the end-of-year recital with complete confidence. It's been transformational."</blockquote>
-      <div class="t-author">
-        <div class="t-avatar b">M</div>
-        <div>
-          <div class="t-name">Michael T.</div>
-          <div class="t-role">Parent of student, 1 year</div>
+    <div class="pricing-cards">
+      <div class="price-card reveal">
+        <div class="price-card-info">
+          <h3>30-Minute Lesson</h3>
+          <p>Great for younger students & beginners</p>
         </div>
+        <div class="price-amount"><sup>$</sup>50</div>
       </div>
-    </div>
-
-    <div class="t-card reveal reveal-delay-2">
-      <div class="t-stars">★★★★★</div>
-      <blockquote>"I came wanting to play jazz. They didn't try to change that — they built everything around it. Now I'm improvising and composing my own pieces. Genuinely life-changing."</blockquote>
-      <div class="t-author">
-        <div class="t-avatar c">J</div>
-        <div>
-          <div class="t-name">James R.</div>
-          <div class="t-role">Intermediate, 18 months</div>
+      <div class="price-card reveal reveal-delay-1">
+        <div class="price-card-info">
+          <h3>45-Minute Lesson</h3>
+          <p>Ideal for developing students</p>
         </div>
+        <div class="price-amount"><sup>$</sup>70</div>
       </div>
+      <div class="price-card reveal reveal-delay-2">
+        <div class="price-card-info">
+          <h3>60-Minute Lesson</h3>
+          <p>For advanced & exam students</p>
+        </div>
+        <div class="price-amount"><sup>$</sup>90</div>
+      </div>
+      <p class="pricing-note reveal reveal-delay-3">Prices per lesson · Invoiced weekly · First lesson free</p>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-  <div class="cta-glow"></div>
-  <h2 class="reveal">Ready to start playing?</h2>
+  <h2 class="reveal">Ready to start <em>playing?</em></h2>
   <p class="reveal reveal-delay-1">Your first lesson is risk-free. Come discover what music can mean to you.</p>
   <div class="cta-actions">
-    <a href="enroll.html" class="btn-primary btn-large reveal reveal-delay-2">Enrol at Music Depot</a>
-    <a href="contact.html" class="btn-ghost btn-large reveal reveal-delay-3">Ask a Question</a>
+    <a href="enroll.html" class="btn-primary btn-large btn-gold reveal reveal-delay-2">Book a Free Lesson</a>
+    <a href="enroll.html" class="btn-ghost-light btn-large reveal reveal-delay-3">Enrol Now</a>
   </div>
 </section>
 
@@ -1241,7 +1789,6 @@
   <ul class="footer-links">
     <li><a href="#experience">Experience</a></li>
     <li><a href="#journey">Journey</a></li>
-    <li><a href="#testimonials">Students</a></li>
     <li><a href="enroll.html">Enrol</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
@@ -1265,7 +1812,7 @@
   const nav = document.querySelector('nav');
   window.addEventListener('scroll', () => {
     nav.style.background = window.scrollY > 80
-      ? 'rgba(10,10,10,0.92)' : 'rgba(10,10,10,0.75)';
+      ? 'rgba(248,244,238,0.96)' : 'rgba(248,244,238,0.9)';
   });
 
   // ── SMOOTH ANCHORS ──
@@ -1302,7 +1849,6 @@
     heroPianoKeys.appendChild(k);
   });
 
-  // animate keys ripple
   const heroKeyEls = heroPianoKeys.querySelectorAll('.key-w, .key-b');
   let rippleIdx = 0;
   setInterval(() => {
@@ -1319,7 +1865,6 @@
     return audioCtx;
   }
 
-  // Frequencies for C4 to E5 (15 notes)
   const noteFreqs = [
     261.63, 277.18, 293.66, 311.13, 329.63,
     349.23, 369.99, 392.00, 415.30, 440.00,
@@ -1352,11 +1897,8 @@
   }
 
   // Build piano keyboard
-  // Layout: C D E F G A B C D E F G A B C D E  (C4–E5)
-  // Black keys: C# D# F# G# A# C# D# F# G#
   const pianoContainer = document.getElementById('pianoContainer');
 
-  // Define the octave pattern: [type, noteIndex, label, keyboardKey]
   const keys = [
     {t:'w', f:0,  l:'C', k:'a'},
     {t:'b', f:1,  l:'C#',k:'w'},
@@ -1377,13 +1919,10 @@
     {t:'w', f:16, l:'E', k:"'"},
   ];
 
-  // Build white keys first, place black keys absolutely
   const whiteKeys = keys.filter(k => k.t === 'w');
   const blackKeys  = keys.filter(k => k.t === 'b');
-
   const keyEls = {};
 
-  // White keys
   whiteKeys.forEach(kd => {
     const el = document.createElement('div');
     el.className = 'pk-w';
@@ -1402,18 +1941,14 @@
     el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
   });
 
-  // Black keys — positioned absolutely between white keys
-  // We need to calculate position based on white key index
-  // White key positions: C=0, D=1, E=2, F=3, G=4, A=5, B=6, C=7, D=8, E=9, F=10, G=11, A=12, B=13, C=14, D=15, E=16
-  // White key width = 52px, gap = 0
   const blackOffsets = {
-    1:  {after: 0}, // C# after C (white index 0)
-    3:  {after: 1}, // D# after D (white index 1)
-    6:  {after: 3}, // F# after F (white index 3)
-    8:  {after: 4}, // G# after G (white index 4)
-    10: {after: 5}, // A# after A (white index 5)
-    13: {after: 7}, // C# after C (white index 7)
-    15: {after: 8}, // D# after D (white index 8)
+    1:  {after: 0},
+    3:  {after: 1},
+    6:  {after: 3},
+    8:  {after: 4},
+    10: {after: 5},
+    13: {after: 7},
+    15: {after: 8},
   };
 
   blackKeys.forEach(kd => {
@@ -1435,7 +1970,6 @@
     el.addEventListener('touchstart', e => { e.preventDefault(); trigger(); }, {passive:false});
   });
 
-  // Keyboard support
   const pressedKeys = new Set();
   document.addEventListener('keydown', e => {
     if (pressedKeys.has(e.key)) return;
@@ -1450,6 +1984,38 @@
     pressedKeys.delete(e.key);
     const el = Object.values(keyEls).find(k => k.dataset.key === e.key.toLowerCase());
     if (el) el.classList.remove('active');
+  });
+
+  // ── JOURNEY PANEL ──
+  const steps = document.querySelectorAll('.step[data-step]');
+  const panels = document.querySelectorAll('.panel-slide');
+  const panelDefault = document.getElementById('panelDefault');
+  let hideTimer = null;
+
+  steps.forEach(step => {
+    step.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimer);
+      const id = step.dataset.step;
+      // hide all slides instantly
+      panels.forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+      });
+      // show target with fade
+      const target = document.querySelector(`.panel-slide[data-panel="${id}"]`);
+      if (target) {
+        target.style.display = 'block';
+        requestAnimationFrame(() => requestAnimationFrame(() => target.classList.add('active')));
+      }
+      panelDefault.classList.add('hidden');
+    });
+    step.addEventListener('mouseleave', () => {
+      panels.forEach(p => p.classList.remove('active'));
+      hideTimer = setTimeout(() => {
+        panels.forEach(p => { p.style.display = 'none'; });
+        panelDefault.classList.remove('hidden');
+      }, 360);
+    });
   });
 
   // ── FOOTER PIANO KEYS STRIP ──
