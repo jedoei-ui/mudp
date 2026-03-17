@@ -230,25 +230,25 @@
   <p class="page-sub">Fill in the form below and we'll be in touch within 24 hours to schedule your first trial lesson.</p>
 
   <div class="enrol-grid">
-    <form>
+    <form action="https://formspree.io/f/mzdjkezn" method="POST">
       <div class="form-group">
         <label>Your Name</label>
-        <input type="text" placeholder="Full name" required />
+        <input type="text" name="name" placeholder="Full name" required />
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="you@example.com" required />
+        <input type="email" name="email" placeholder="you@example.com" required />
       </div>
 
       <div class="form-group">
         <label>Phone</label>
-        <input type="tel" placeholder="+61 0481 132 760" />
+        <input type="tel" name="phone" placeholder="+61 0481 132 760" />
       </div>
 
       <div class="form-group">
         <label>Student Age</label>
-        <select>
+        <select name="age">
           <option value="" disabled selected>Select age range</option>
           <option>Under 7</option>
           <option>7–12</option>
@@ -261,7 +261,7 @@
 
       <div class="form-group">
         <label>Experience Level</label>
-        <select>
+        <select name="experience">
           <option value="" disabled selected>Select level</option>
           <option>Complete beginner</option>
           <option>Some experience (< 1 year)</option>
@@ -273,7 +273,7 @@
 
       <div class="form-group">
         <label>Musical Goals</label>
-        <textarea placeholder="Tell us what you'd love to achieve — your favourite genres, songs, or just what excites you about playing piano..."></textarea>
+        <textarea name="goals" placeholder="Tell us what you'd love to achieve — your favourite genres, songs, or just what excites you about playing piano..."></textarea>
       </div>
 
       <button type="submit" class="submit-btn">Send Enquiry</button>
