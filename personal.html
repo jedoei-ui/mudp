@@ -33,5 +33,42 @@
 </head>
 <body>
 
+<!-- ── HERO: Scroll Image Sequence ── -->
+<section class="hero">
+
+  <!-- Internal scroll container (traps scroll, invisible) -->
+  <div class="hero-scroll" id="heroScroll">
+    <div class="hero-spacer" id="heroSpacer"></div>
+  </div>
+
+  <!-- Image layer (overlays scroll container) -->
+  <div class="hero-image" id="heroImage" aria-hidden="true">
+    <img id="heroImg" src="https://picsum.photos/seed/1/1920/1080" alt="" />
+  </div>
+
+  <!-- Text overlay (fades in on last frame) -->
+  <div class="hero-text" id="heroText" aria-hidden="true">
+    <div class="hero-live">
+      <span class="live-dot"></span>
+      <span>Live</span>
+    </div>
+    <h1 class="hero-name">Jed <em>Oei</em></h1>
+    <p class="hero-role">CM &amp; QS Student &middot; QUT</p>
+    <a class="hero-cta" href="#contact">View Contact &rarr;</a>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="hero-progress" aria-hidden="true">
+    <div class="hero-progress-fill" id="heroFill"></div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+
+</section>
+
 </body>
 </html>
