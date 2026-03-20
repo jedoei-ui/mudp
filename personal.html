@@ -516,5 +516,61 @@
   </div>
 </section>
 
+<script>
+  // ── IMAGE SEQUENCE CONFIG ──
+  // Replace these URLs with your own images (any count up to 65).
+  // Each entry is one frame. Scroll speed = FRAME_HEIGHT px per frame.
+  const FRAME_HEIGHT = 120
+  const images = Array.from({ length: 20 }, (_, i) =>
+    `https://picsum.photos/seed/${i + 1}/1920/1080`
+  )
+
+  // ── DOM REFS ──
+  const scrollEl = document.getElementById('heroScroll')
+  const spacerEl = document.getElementById('heroSpacer')
+  const imgEl    = document.getElementById('heroImg')
+  const textEl   = document.getElementById('heroText')
+  const fillEl   = document.getElementById('heroFill')
+  const hintEl   = document.getElementById('scrollHint')
+
+  // ── PRELOAD ──
+  images.forEach(src => { const img = new Image(); img.src = src })
+
+  // ── SPACER HEIGHT ──
+  function updateSpacer() {
+    const h = Math.max(FRAME_HEIGHT, 1) * images.length + scrollEl.clientHeight
+    spacerEl.style.height = h + 'px'
+  }
+  const ro = new ResizeObserver(updateSpacer)
+  ro.observe(scrollEl)
+  updateSpacer()
+
+  // ── SCROLL HANDLER ──
+  scrollEl.addEventListener('scroll', () => {
+    const safeH = Math.max(FRAME_HEIGHT, 1)
+    const idx = Math.max(0, Math.min(
+      Math.floor(scrollEl.scrollTop / safeH),
+      images.length - 1
+    ))
+
+    // Swap frame
+    imgEl.src = images[idx]
+
+    // Progress bar
+    const pct = images.length > 1 ? idx / (images.length - 1) : 1
+    fillEl.style.width = (pct * 100) + '%'
+
+    // Text overlay — fade in with child stagger on last frame
+    const isLast = idx === images.length - 1
+    textEl.classList.toggle('hero-text--visible', isLast)
+    // pointer-events on CTA handled by CSS .hero-text--visible .hero-cta rule
+
+    // Scroll hint — fade out after first scroll movement
+    if (hintEl && scrollEl.scrollTop > 10) {
+      hintEl.style.opacity = '0'
+    }
+  }, { passive: true })
+</script>
+
 </body>
 </html>
