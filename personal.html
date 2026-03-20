@@ -563,6 +563,7 @@
     // Text overlay — fade in with child stagger on last frame
     const isLast = idx === images.length - 1
     textEl.classList.toggle('hero-text--visible', isLast)
+    textEl.setAttribute('aria-hidden', isLast ? 'false' : 'true')
     // pointer-events on CTA handled by CSS .hero-text--visible .hero-cta rule
 
     // Scroll hint — fade out after first scroll movement
