@@ -29,6 +29,219 @@
       color: var(--text);
       overflow-x: hidden;
     }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #040c17;
+}
+
+/* Internal scroll container */
+.hero-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  z-index: 0;
+}
+.hero-scroll::-webkit-scrollbar { display: none; }
+
+/* Spacer — height set by JS */
+.hero-spacer { width: 100%; }
+
+/* Image layer */
+.hero-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Blueprint grid overlay */
+.hero-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(65,184,245,.04) 39px, rgba(65,184,245,.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(65,184,245,.04) 39px, rgba(65,184,245,.04) 40px);
+  pointer-events: none;
+}
+/* Radial glow */
+.hero-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(65,184,245,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Text overlay */
+.hero-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+/* Class toggled by JS on last frame — reveals parent, children transition in */
+.hero-text--visible { opacity: 1; }
+
+/* Children use CSS transitions (not animations) so they reverse correctly on scroll-back.
+   Each child starts hidden/shifted; .hero-text--visible triggers staggered reveal. */
+.hero-live, .hero-name, .hero-role, .hero-cta {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.hero-text--visible .hero-live { opacity: 1; transform: translateY(0); transition-delay: .1s; }
+.hero-text--visible .hero-name { opacity: 1; transform: translateY(0); transition-delay: .22s; }
+.hero-text--visible .hero-role { opacity: 1; transform: translateY(0); transition-delay: .34s; }
+.hero-text--visible .hero-cta  { opacity: 1; transform: translateY(0); transition-delay: .46s; pointer-events: all; }
+.hero-live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: .25em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .3; }
+}
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 84px);
+  font-weight: 600;
+  color: var(--bright);
+  letter-spacing: -.01em;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.hero-name em {
+  font-style: italic;
+  color: var(--cyan);
+}
+.hero-role {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: rgba(200,228,245,.5);
+  text-transform: uppercase;
+  margin-bottom: 36px;
+}
+.hero-cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid rgba(65,184,245,.35);
+  padding: 10px 28px;
+  transition: background .25s, color .25s;
+  pointer-events: none; /* enabled only when .hero-text--visible is active */
+}
+.hero-cta:hover {
+  background: var(--cyan);
+  color: var(--navy);
+}
+
+/* Progress bar */
+.hero-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(65,184,245,.08);
+  z-index: 3;
+}
+.hero-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(65,184,245,.45);
+  transition: width .1s linear;
+}
+
+/* Shared keyframes (used by hero children and contact card entrance) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Scanline effect */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,.08) 3px,
+    rgba(0,0,0,.08) 4px
+  );
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 1;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+.scroll-hint span {
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: rgba(65,184,245,.4);
+  text-transform: uppercase;
+}
+.scroll-hint-line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(rgba(65,184,245,.3), transparent);
+}
   </style>
 </head>
 <body>
