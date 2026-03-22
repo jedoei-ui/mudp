@@ -81,7 +81,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 
 /* Section label */
 .lbl {
-  font-size: 9px; letter-spacing: .32em;
+  font-size: 12px; letter-spacing: .32em;
   color: var(--cyan); text-transform: uppercase;
   display: flex; align-items: center; justify-content: center; gap: 14px;
   margin-bottom: 28px;
@@ -92,7 +92,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 /* Heading */
 .h {
   font-family: var(--serif);
-  font-size: clamp(34px, 4.5vw, 56px);
+  font-size: clamp(44px, 5.5vw, 72px);
   font-weight: 600; color: var(--bright);
   line-height: 1.1; letter-spacing: -.01em;
 }
@@ -108,7 +108,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .s.in .divider { width: 100%; }
 
 /* Body copy */
-.body { font-size: 13px; line-height: 1.85; color: var(--text); max-width: 500px; margin: 0 auto; }
+.body { font-size: 16px; line-height: 1.85; color: var(--text); max-width: 500px; margin: 0 auto; }
 
 /* ── FIXED UI ── */
 .nav-dots {
@@ -144,7 +144,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
   white-space: nowrap; line-height: 1;
 }
 .live {
-  font-size: 9px; letter-spacing: .35em; color: var(--cyan);
+  font-size: 12px; letter-spacing: .35em; color: var(--cyan);
   text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px;
   margin-bottom: 14px;
 }
@@ -156,7 +156,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 
 .s1-name {
   font-family: var(--serif);
-  font-size: clamp(72px, 11vw, 130px);
+  font-size: clamp(88px, 13vw, 160px);
   font-weight: 600; color: var(--bright);
   line-height: .92; letter-spacing: -.02em;
   margin-bottom: 18px;
@@ -164,7 +164,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .s1-name em { font-style: italic; color: var(--cyan); }
 
 .s1-role {
-  font-size: 11px; letter-spacing: .2em;
+  font-size: 14px; letter-spacing: .2em;
   color: var(--dim); text-transform: uppercase;
   margin-bottom: 52px;
 }
@@ -188,12 +188,12 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .edu-row { display: grid; grid-template-columns: 148px 1fr; border-bottom: 1px solid var(--border); }
 .edu-row:last-child { border-bottom: none; }
 .edu-k {
-  padding: 16px 20px; font-size: 9px; letter-spacing: .2em;
+  padding: 16px 20px; font-size: 11px; letter-spacing: .2em;
   color: rgba(65,184,245,.4); text-transform: uppercase;
   border-right: 1px solid var(--border);
   display: flex; align-items: center;
 }
-.edu-v { padding: 16px 22px; font-size: 13px; color: var(--bright); display: flex; align-items: center; }
+.edu-v { padding: 16px 22px; font-size: 16px; color: var(--bright); display: flex; align-items: center; }
 
 /* ── S4: EXPERTISE ── */
 .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
@@ -211,9 +211,9 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
   transition: transform .3s;
 }
 .skill:hover::after { transform: scaleY(1); }
-.sk-n { font-size: 8px; letter-spacing: .2em; color: rgba(65,184,245,.25); margin-bottom: 8px; }
-.sk-t { font-size: 13px; color: var(--bright); margin-bottom: 5px; }
-.sk-d { font-size: 10px; color: var(--dim); line-height: 1.55; }
+.sk-n { font-size: 11px; letter-spacing: .2em; color: rgba(65,184,245,.25); margin-bottom: 8px; }
+.sk-t { font-size: 16px; color: var(--bright); margin-bottom: 5px; }
+.sk-d { font-size: 13px; color: var(--dim); line-height: 1.55; }
 
 /* ── S5: LOCATION ── */
 .s5-coord {
@@ -230,9 +230,9 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
   line-height: .98; letter-spacing: -.02em;
   margin-top: 6px;
 }
-.loc-sub { font-size: 11px; letter-spacing: .2em; color: var(--dim); text-transform: uppercase; margin-top: 14px; }
+.loc-sub { font-size: 14px; letter-spacing: .2em; color: var(--dim); text-transform: uppercase; margin-top: 14px; }
 .loc-list { margin-top: 36px; display: flex; flex-direction: column; gap: 10px; }
-.loc-item { font-size: 11px; color: var(--text); display: flex; align-items: center; gap: 12px; }
+.loc-item { font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 12px; }
 .loc-item::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
 
 /* ── S6: CONTACT ── */
@@ -254,9 +254,9 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
   transition: transform .25s;
 }
 .c-row:hover::before { transform: scaleY(1); }
-.c-lbl { font-size: 9px; letter-spacing: .2em; color: rgba(65,184,245,.4); text-transform: uppercase; }
-.c-val { font-size: 14px; color: var(--bright); letter-spacing: .02em; }
-.c-act { font-size: 9px; letter-spacing: .15em; color: rgba(65,184,245,.35); text-transform: uppercase; text-align: right; transition: color .25s; }
+.c-lbl { font-size: 12px; letter-spacing: .2em; color: rgba(65,184,245,.4); text-transform: uppercase; }
+.c-val { font-size: 17px; color: var(--bright); letter-spacing: .02em; }
+.c-act { font-size: 12px; letter-spacing: .15em; color: rgba(65,184,245,.35); text-transform: uppercase; text-align: right; transition: color .25s; }
 .c-row:hover .c-act { color: var(--cyan); }
 .s6-foot {
   margin-top: 28px; display: flex; justify-content: space-between; align-items: center;
