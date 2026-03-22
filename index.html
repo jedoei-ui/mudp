@@ -67,7 +67,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .dwg { position: absolute; top: 26px; right: 36px; font-size: 9px; letter-spacing: .25em; color: rgba(65,184,245,.28); z-index: 2; }
 
 /* Content wrapper */
-.box { position: relative; z-index: 2; max-width: 880px; width: 100%; }
+.box { position: relative; z-index: 2; max-width: 880px; width: 100%; text-align: center; margin: 0 auto; }
 
 /* ── ENTRANCE ANIMATIONS ── */
 .a { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
@@ -83,10 +83,11 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .lbl {
   font-size: 9px; letter-spacing: .32em;
   color: var(--cyan); text-transform: uppercase;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
   margin-bottom: 28px;
 }
 .lbl::before { content: ''; width: 22px; height: 1px; background: var(--cyan); display: inline-block; }
+.lbl::after  { content: ''; width: 22px; height: 1px; background: var(--cyan); display: inline-block; }
 
 /* Heading */
 .h {
@@ -107,7 +108,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 .s.in .divider { width: 100%; }
 
 /* Body copy */
-.body { font-size: 13px; line-height: 1.85; color: var(--text); max-width: 500px; }
+.body { font-size: 13px; line-height: 1.85; color: var(--text); max-width: 500px; margin: 0 auto; }
 
 /* ── FIXED UI ── */
 .nav-dots {
@@ -144,7 +145,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
 }
 .live {
   font-size: 9px; letter-spacing: .35em; color: var(--cyan);
-  text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+  text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px;
   margin-bottom: 14px;
 }
 .pulse {
@@ -168,7 +169,7 @@ body { background: var(--navy); color: var(--text); font-family: var(--mono); }
   margin-bottom: 52px;
 }
 .s1-scroll {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
   font-size: 8px; letter-spacing: .3em;
   color: rgba(65,184,245,.35); text-transform: uppercase;
 }
